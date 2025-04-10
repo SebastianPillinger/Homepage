@@ -316,11 +316,11 @@
       font-size: 1.4em;
       text-align: justify;
     }
-    /* Schrift im Über-mich-Bereich auf Mobilgeräten etwas verkleinern */
+    /* Schrift im Über-mich-Bereich für mobile Geräte etwas verkleinern */
     @media (max-width: 768px) {
       .about-text { font-size: 1.2em; }
     }
-    /* Portrait unterhalb des Textes für Mobile */
+    /* Portrait unterhalb des Textes auf mobilen Geräten */
     @media (max-width: 768px) {
       .about-container {
         flex-direction: column;
@@ -351,7 +351,7 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
     
-    /* Leistungen – Desktop: Grid mit 3 nebeneinander; Mobile: Slider */
+    /* Leistungen – Desktop: Grid (3 nebeneinander); Mobile: Slider */
     .services-slider-wrapper {
       position: relative;
       width: 100%;
@@ -374,30 +374,29 @@
         display: flex;
         overflow: hidden;
         scroll-snap-type: x mandatory;
-        flex-wrap: nowrap; /* Damit alle Service-Cards in einer Zeile stehen */
+        flex-wrap: nowrap;
         transition: transform 0.3s ease;
       }
       .service-card {
         flex: 0 0 100%;
         scroll-snap-align: start;
       }
-      .services-slider-controls {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 100%;
+      /* Indikatoren unterhalb des Sliders */
+      .services-indicators {
         display: flex;
-        justify-content: space-between;
-        pointer-events: none;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
       }
-      .services-slider-controls button {
-        background: rgba(0,0,0,0.5);
-        border: none;
-        color: white;
-        font-size: 2em;
-        padding: 0 10px;
+      .services-indicators .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
         cursor: pointer;
-        pointer-events: all;
+      }
+      .services-indicators .indicator.active {
+        background: rgba(255,255,255,1);
       }
     }
     
@@ -691,7 +690,7 @@
   </section>
   
   <!-- Leistungen -->
-  <!-- Desktop: Grid (3 nebeneinander); Mobile: Slider (jeder Slide zeigt 1 Karte) -->
+  <!-- Desktop: Grid (3 nebeneinander); Mobile: Slider mit Punkt-Indikatoren -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-slider-wrapper">
@@ -751,11 +750,8 @@
           </div>
         </div>
       </div>
-      <!-- Slider Controls – erscheinen nur auf mobilen Geräten -->
-      <div class="services-slider-controls">
-        <button id="services-prev" aria-label="Vorherige Leistung">&#10094;</button>
-        <button id="services-next" aria-label="Nächste Leistung">&#10095;</button>
-      </div>
+      <!-- Indikatoren (nur in der mobilen Ansicht sichtbar) -->
+      <div class="services-indicators"></div>
     </div>
   </section>
   
@@ -837,7 +833,7 @@
     (function() {
       'use strict';
       
-      /* --- Scroll-Animation mit IntersectionObserver --- */
+      // Scroll-Animation
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -847,7 +843,7 @@
       }, { threshold: 0.33 });
       document.querySelectorAll('.scroll-animation').forEach(el => observer.observe(el));
       
-      /* --- Portfolio-Daten --- */
+      // Portfolio-Daten
       const portfolioData = [
         {
           src: "bilder/Hochzeit-001.jpg",
@@ -881,7 +877,7 @@
         }
       ];
       
-      /* --- DOM-Elemente abrufen --- */
+      // DOM-Elemente
       const portfolioGallery = document.getElementById('portfolio-gallery');
       const lightbox = document.getElementById('lightbox');
       const sliderContainer = document.getElementById('slider-container');
@@ -889,7 +885,6 @@
       const arrowRight = document.querySelector('.lightbox-arrow.right');
       const closeButton = document.querySelector('.lightbox-close');
       
-      /* --- Variablen zur Steuerung der Lightbox --- */
       let currentIndex = 0;
       let images = [];
       let isAnimating = false;
@@ -897,7 +892,7 @@
       let touchStartY = 0;
       let currentPosition = 0;
       
-      /* --- Portfolio initialisieren --- */
+      // Portfolio initialisieren
       portfolioData.forEach(item => {
         const container = document.createElement('div');
         container.className = 'image-container';
@@ -909,7 +904,7 @@
         portfolioGallery.appendChild(container);
       });
       
-      /* --- Lightbox-Funktionen (wie im Original) --- */
+      // Lightbox-Funktionen
       function openLightbox(initialSrc, imageList) {
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
@@ -938,7 +933,7 @@
         document.body.style.overflow = "auto";
       }
       
-      // Beim Klick auf Pfeile oder Tastatur soll der Übergang sprunghaft erfolgen (ohne weiche Animation)
+      // Bildwechsel in der Lightbox (sprunghaft)
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
         
@@ -970,7 +965,7 @@
         new Image().src = images[nextIndex];
       }
       
-      /* --- Touch-Handling für Lightbox (wie im Original) --- */
+      // Touch-Handling für Lightbox
       function handleTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -986,7 +981,7 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
-        // Vertikales Wischen priorisieren (mit dampening)
+        // Bei stark vertikalem Swipe: Bild leicht mitbewegen (dampened)
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
           const dampenedDelta = deltaY * 0.3;
           sliderContainer.style.transform = `translateY(${dampenedDelta}px)`;
@@ -1010,33 +1005,31 @@
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
         
-        // Vertikales Wischen (Schließen bei ausreichend starkem Swipe)
+        // Bei vertikalem Swipe: Schließen, wenn ausreichend stark
         if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
         }
     
-        // Horizontales Wischen (Bildwechsel)
+        // Bei horizontalem Swipe: Bildwechsel
         if(Math.abs(deltaX) > window.innerWidth * 0.15) {
           const direction = deltaX > 0 ? -1 : 1;
-          changeImage(direction, false); // sprunghafter Übergang
+          changeImage(direction, false);
         } else {
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
           sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         }
       }
       
-      /* --- Event-Listener für Lightbox --- */
       lightbox.addEventListener('touchstart', handleTouchStart);
       lightbox.addEventListener('touchmove', handleTouchMove);
       lightbox.addEventListener('touchend', handleTouchEnd);
       
-      // Schließen bei Klick auf den Hintergrund
+      // Schließen bei Klick auf Hintergrund
       lightbox.addEventListener('click', (e) => {
         if(e.target === lightbox) closeLightbox();
       });
       
-      // Tastatur-Navigation
       document.addEventListener('keydown', (e) => {
         if(!lightbox.classList.contains('active')) return;
         if(e.key === 'ArrowLeft') changeImage(-1, false);
@@ -1044,7 +1037,6 @@
         else if(e.key === 'Escape') closeLightbox();
       });
       
-      // Pfeil-Buttons – sprunghafter Übergang
       arrowLeft.addEventListener('click', (e) => {
         e.stopPropagation();
         changeImage(-1, false);
@@ -1054,7 +1046,6 @@
         changeImage(1, false);
       });
       
-      // Schließen-Button (X) für Desktop
       if(closeButton) {
         closeButton.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1062,7 +1053,6 @@
         });
       }
       
-      /* --- Smooth Scrolling für interne Links --- */
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           e.preventDefault();
@@ -1073,7 +1063,6 @@
         });
       });
       
-      /* --- Kopieren in die Zwischenablage --- */
       function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
           alert("Kopiert: " + text);
@@ -1087,16 +1076,40 @@
         });
       });
       
-      /* --- Slider für den Leistungen-Bereich auf mobilen Geräten --- */
+      /* --- Slider für den Leistungen-Bereich auf mobilen Geräten mit Punkt-Indikatoren --- */
       if(window.innerWidth <= 768) {
         let servicesIndex = 0;
         const servicesContainer = document.querySelector('.services-container');
         const totalSlides = document.querySelectorAll('.service-card').length;
-        const servicesWrapper = document.querySelector('.services-slider-wrapper');
+        const indicatorsContainer = document.querySelector('.services-indicators');
         
-        // Touch-Handling für den Slider, um nur den Slider zu verschieben, nicht die gesamte Seite
+        // Funktion, um die aktiven Indikatoren zu aktualisieren
+        function updateIndicators() {
+          const dots = indicatorsContainer.querySelectorAll('.indicator');
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === servicesIndex);
+          });
+        }
+        
+        // Indikatoren erstellen
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'indicator';
+          if(i === 0) {
+            dot.classList.add('active');
+          }
+          dot.addEventListener('click', () => {
+            servicesIndex = i;
+            servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+            updateIndicators();
+          });
+          indicatorsContainer.appendChild(dot);
+        }
+        
+        // Touch-Handling für den Slider, damit nur der Slider verschoben wird
         let sliderStartX = 0;
         let sliderStartY = 0;
+        const servicesWrapper = document.querySelector('.services-slider-wrapper');
         servicesWrapper.addEventListener('touchstart', (e) => {
           sliderStartX = e.touches[0].clientX;
           sliderStartY = e.touches[0].clientY;
@@ -1118,30 +1131,12 @@
               servicesIndex--;
             }
             servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+            updateIndicators();
           }
         });
         
-        // Klick-Events für die Pfeiltasten im Slider
-        document.getElementById('services-prev').addEventListener('click', () => {
-          servicesIndex = Math.max(servicesIndex - 1, 0);
-          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
-        });
-        document.getElementById('services-next').addEventListener('click', () => {
-          servicesIndex = Math.min(servicesIndex + 1, totalSlides - 1);
-          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
-        });
+        // Klick-Events für die Pfeile wurden entfernt – stattdessen dienen hier die Punkt-Indikatoren zur Navigation.
       }
-      
-      /* --- Touch-Event für Highlight-Bereich --- */
-      const highlightContainer = document.getElementById('highlight-container');
-      highlightContainer.addEventListener('touchstart', () => {
-        highlightContainer.classList.add('touch-active');
-      });
-      document.addEventListener('touchstart', (e) => {
-        if (!highlightContainer.contains(e.target)) {
-          highlightContainer.classList.remove('touch-active');
-        }
-      });
     })();
   </script>
 </body>
