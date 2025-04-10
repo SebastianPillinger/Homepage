@@ -91,12 +91,9 @@
       position: relative;
       z-index: 1;
     }
-    /* Für den Service-Bereich in Mobile den Container anpassen */
+    /* Den #services-Bereich in Mobile vollständig nutzen */
     @media (max-width: 768px) {
-      #services {
-        max-width: 100%;
-        padding: 0;
-      }
+      #services { max-width: 100%; padding: 0; }
     }
     
     /* Hero Section */
@@ -497,16 +494,22 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
-    /* Kundenfeedback – Testimonials */
-    .testimonials-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 30px;
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
+    /* Kundenfeedback – Testimonials (analog zum Services-Slider) */
+    .testimonials-slider-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
     }
-    /* Mobile: Slider-Ansicht für Testimonials – analog zum Services-Slider */
+    @media (min-width: 769px) {
+      .testimonials-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+      }
+    }
     @media (max-width: 768px) {
       .testimonials-container {
         display: flex;
@@ -995,234 +998,4 @@
       }
       
       function preloadNeighbors(index) {
-        const prevIndex = (index - 1 + images.length) % images.length;
-        const nextIndex = (index + 1) % images.length;
-        new Image().src = images[prevIndex];
-        new Image().src = images[nextIndex];
-      }
-      
-      // Lightbox: Touch-Handling inklusive vertikales Schließen
-      function handleTouchStart(e) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        sliderContainer.style.transition = 'none';
-      }
-      
-      function handleTouchMove(e) {
-        e.preventDefault();
-        if (isAnimating) return;
-        
-        const touchX = e.touches[0].clientX;
-        const touchY = e.touches[0].clientY;
-        const deltaX = touchX - touchStartX;
-        const deltaY = touchY - touchStartY;
-    
-        // Bei vertikalem Swipe: Bild mitbewegen
-        if(Math.abs(deltaY) > Math.abs(deltaX)) {
-          sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
-          return;
-        }
-    
-        const movePercentage = (deltaX / window.innerWidth) * 100;
-        let newPosition = currentPosition + movePercentage;
-        sliderContainer.style.transform = `translateX(${newPosition}%)`;
-      }
-      
-      function handleTouchEnd(e) {
-        const endX = e.changedTouches[0].clientX;
-        const endY = e.changedTouches[0].clientY;
-        const deltaX = endX - touchStartX;
-        const deltaY = endY - touchStartY;
-        
-        // Bei vertikalem Swipe, wenn ausreichend stark, Lightbox schließen
-        if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
-          closeLightbox();
-          return;
-        }
-        
-        // Horizontaler Swipe: Bildwechsel
-        if(Math.abs(deltaX) > window.innerWidth * 0.15) {
-          const direction = deltaX > 0 ? -1 : 1;
-          changeImage(direction, false);
-        } else {
-          sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
-          sliderContainer.style.transform = `translateX(${currentPosition}%)`;
-        }
-      }
-      
-      lightbox.addEventListener('touchstart', handleTouchStart);
-      lightbox.addEventListener('touchmove', handleTouchMove);
-      lightbox.addEventListener('touchend', handleTouchEnd);
-      
-      lightbox.addEventListener('click', (e) => {
-        if(e.target === lightbox) closeLightbox();
-      });
-      
-      document.addEventListener('keydown', (e) => {
-        if(!lightbox.classList.contains('active')) return;
-        if(e.key === 'ArrowLeft') changeImage(-1, false);
-        else if(e.key === 'ArrowRight') changeImage(1, false);
-        else if(e.key === 'Escape') closeLightbox();
-      });
-      
-      arrowLeft.addEventListener('click', (e) => {
-        e.stopPropagation();
-        changeImage(-1, false);
-      });
-      arrowRight.addEventListener('click', (e) => {
-        e.stopPropagation();
-        changeImage(1, false);
-      });
-      
-      if(closeButton) {
-        closeButton.addEventListener('click', (e) => {
-          e.stopPropagation();
-          closeLightbox();
-        });
-      }
-      
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetEl = document.getElementById(this.getAttribute('href').substring(1));
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      });
-      
-      function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-          alert("Kopiert: " + text);
-        }).catch(() => {
-          alert("Kopieren fehlgeschlagen. Bitte manuell kopieren: " + text);
-        });
-      }
-      document.querySelectorAll('[data-clipboard]').forEach(el => {
-        el.addEventListener('click', () => {
-          copyToClipboard(el.getAttribute('data-clipboard'));
-        });
-      });
-      
-      /* --- Slider für den Leistungen-Bereich (Services) auf mobilen Geräten --- */
-      if(window.innerWidth <= 768) {
-        let servicesIndex = 0;
-        const servicesContainer = document.querySelector('.services-container');
-        const totalServices = document.querySelectorAll('.service-card').length;
-        const servicesIndicators = document.querySelector('.services-indicators');
-        
-        function updateServicesIndicators() {
-          const dots = servicesIndicators.querySelectorAll('.indicator');
-          dots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === servicesIndex);
-          });
-        }
-        
-        for (let i = 0; i < totalServices; i++) {
-          const dot = document.createElement('span');
-          dot.className = 'indicator';
-          if(i === 0) { dot.classList.add('active'); }
-          dot.addEventListener('click', () => {
-            servicesIndex = i;
-            servicesContainer.style.transition = 'transform 0.3s ease';
-            servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
-            updateServicesIndicators();
-            setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
-          });
-          servicesIndicators.appendChild(dot);
-        }
-        
-        let sliderStartX = 0, sliderStartY = 0;
-        const servicesWrapper = document.querySelector('.services-slider-wrapper');
-        servicesWrapper.addEventListener('touchstart', (e) => {
-          sliderStartX = e.touches[0].clientX;
-          sliderStartY = e.touches[0].clientY;
-        });
-        servicesWrapper.addEventListener('touchmove', (e) => {
-          let deltaX = e.touches[0].clientX - sliderStartX;
-          let deltaY = e.touches[0].clientY - sliderStartY;
-          if(Math.abs(deltaX) > Math.abs(deltaY)) {
-            e.preventDefault();
-            const movePercentage = (deltaX / window.innerWidth) * 100;
-            servicesContainer.style.transform = `translateX(-${servicesIndex * 100 - movePercentage}vw)`;
-          }
-        });
-        servicesWrapper.addEventListener('touchend', (e) => {
-          const sliderEndX = e.changedTouches[0].clientX;
-          const delta = sliderEndX - sliderStartX;
-          if (Math.abs(delta) > 50) {
-            if(delta < 0 && servicesIndex < totalServices - 1) {
-              servicesIndex++;
-            } else if(delta > 0 && servicesIndex > 0) {
-              servicesIndex--;
-            }
-          }
-          servicesContainer.style.transition = 'transform 0.3s ease';
-          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
-          updateServicesIndicators();
-          setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
-        });
-      }
-      
-      /* --- Slider für den Testimonials-Bereich auf mobilen Geräten --- */
-      if(window.innerWidth <= 768) {
-        let testimonialIndex = 0;
-        const testimonialsContainer = document.querySelector('.testimonials-container');
-        const totalTestimonials = document.querySelectorAll('.testimonial-card').length;
-        const testimonialsIndicators = document.querySelector('.testimonials-indicators');
-        
-        function updateTestimonialIndicators() {
-          const dots = testimonialsIndicators.querySelectorAll('.indicator');
-          dots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === testimonialIndex);
-          });
-        }
-        
-        for (let i = 0; i < totalTestimonials; i++) {
-          const dot = document.createElement('span');
-          dot.className = 'indicator';
-          if(i === 0) { dot.classList.add('active'); }
-          dot.addEventListener('click', () => {
-            testimonialIndex = i;
-            testimonialsContainer.style.transition = 'transform 0.3s ease';
-            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
-            updateTestimonialIndicators();
-            setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
-          });
-          testimonialsIndicators.appendChild(dot);
-        }
-        
-        let testimonialStartX = 0, testimonialStartY = 0;
-        testimonialsContainer.addEventListener('touchstart', (e) => {
-          testimonialStartX = e.touches[0].clientX;
-          testimonialStartY = e.touches[0].clientY;
-        });
-        testimonialsContainer.addEventListener('touchmove', (e) => {
-          let deltaX = e.touches[0].clientX - testimonialStartX;
-          let deltaY = e.touches[0].clientY - testimonialStartY;
-          if(Math.abs(deltaX) > Math.abs(deltaY)) {
-            e.preventDefault();
-            const movePercentage = (deltaX / window.innerWidth) * 100;
-            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100 - movePercentage}vw)`;
-          }
-        });
-        testimonialsContainer.addEventListener('touchend', (e) => {
-          const testimonialEndX = e.changedTouches[0].clientX;
-          const delta = testimonialEndX - testimonialStartX;
-          if (Math.abs(delta) > 50) {
-            if(delta < 0 && testimonialIndex < totalTestimonials - 1) {
-              testimonialIndex++;
-            } else if(delta > 0 && testimonialIndex > 0) {
-              testimonialIndex--;
-            }
-          }
-          testimonialsContainer.style.transition = 'transform 0.3s ease';
-          testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
-          updateTestimonialIndicators();
-          setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
-        });
-      }
-    })();
-  </script>
-</body>
-</html>
+       
