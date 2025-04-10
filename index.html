@@ -224,7 +224,7 @@
     @media (max-width: 768px) {
       .lightbox-arrow { font-size: 3em; padding: 5px 10px; }
     }
-    /* X-Schaltfläche zum Schließen (nur PC) */
+    /* X-Schaltfläche zum Schließen (nur Desktop) */
     .lightbox-close {
       position: absolute;
       top: 20px;
@@ -236,9 +236,7 @@
       display: none;
     }
     @media (min-width: 769px) {
-      .lightbox-close {
-        display: block;
-      }
+      .lightbox-close { display: block; }
     }
     
     /* Highlight Section */
@@ -337,16 +335,108 @@
       transform: scale(1.1);
       box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
-    /* Leistungen: Auf Desktop anzeigen, auf Mobile ausblenden */
-    @media (max-width: 768px) {
-      #services { display: none; }
-      .services-container { grid-template-columns: 1fr; padding: 10px; }
-      .service-content h3 { font-size: 1.5rem; }
-      .service-content p { font-size: 1rem; }
-      .about-container { flex-direction: column; text-align: center; }
-      .about-image img { width: 100%; max-width: 300px; }
-      h2 { font-size: 1.5em; }
-      .cta-button { font-size: 0.8em; padding: 10px 20px; margin-top: 15px; }
+    
+    /* Leistungen (jetzt immer sichtbar) */
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .service-card {
+      background: var(--background1-color);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: transform 0.5s var(--transition-timing), box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    .service-image {
+      height: 250px;
+      overflow: hidden;
+    }
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .service-card:hover .service-image img { transform: scale(1.05); }
+    .service-content {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-content h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--accent1-color);
+      position: relative;
+      padding-bottom: 10px;
+    }
+    .service-content h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--accent1-color);
+    }
+    .service-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    .service-features {
+      margin: 20px 0;
+      padding: 0;
+      list-style: none;
+      flex-grow: 1;
+    }
+    .service-features li {
+      padding: 8px 0;
+      font-size: 1rem;
+      position: relative;
+      padding-left: 25px;
+      color: var(--text-color);
+    }
+    .service-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent1-color);
+      font-weight: bold;
+    }
+    .service-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent1-color);
+      margin: 15px 0;
+      text-align: right;
+    }
+    .service-button {
+      text-align: center;
+      padding: 12px 20px;
+      background: var(--accent1-color);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-top: auto;
+    }
+    .service-button:hover {
+      background: var(--accent2-color);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
     /* Kundenfeedback */
@@ -544,7 +634,7 @@
     </div>
   </section>
   
-  <!-- Leistungen (nur auf PC sichtbar) -->
+  <!-- Leistungen -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-container">
@@ -698,32 +788,32 @@
         {
           src: "bilder/Hochzeit-001.jpg",
           alt: "Hochzeiten",
-          images: Array.from({ length: 59 }, (_, i) => `bilder/Hochzeit-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 59 }, (_, i) => `bilder/Hochzeit-${String(i+1).padStart(3, '0')}.jpg`)
         },
         {
           src: "bilder/Event-001.jpg",
           alt: "Events & Partys",
-          images: Array.from({ length: 18 }, (_, i) => `bilder/Event-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 18 }, (_, i) => `bilder/Event-${String(i+1).padStart(3, '0')}.jpg`)
         },
         {
           src: "bilder/Sport-001.jpg",
           alt: "Sportveranstaltungen",
-          images: Array.from({ length: 16 }, (_, i) => `bilder/Sport-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 16 }, (_, i) => `bilder/Sport-${String(i+1).padStart(3, '0')}.jpg`)
         },
         {
           src: "bilder/Tiere-001.jpg",
           alt: "Haustiere",
-          images: Array.from({ length: 17 }, (_, i) => `bilder/Tiere-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 17 }, (_, i) => `bilder/Tiere-${String(i+1).padStart(3, '0')}.jpg`)
         },
         {
           src: "bilder/Wildlife-001.jpg",
           alt: "Wildlife",
-          images: Array.from({ length: 12 }, (_, i) => `bilder/Wildlife-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 12 }, (_, i) => `bilder/Wildlife-${String(i+1).padStart(3, '0')}.jpg`)
         },
         {
           src: "bilder/Landschaften-001.jpg",
           alt: "Landschaften",
-          images: Array.from({ length: 64 }, (_, i) => `bilder/Landschaften-${String(i+1).padStart(3,'0')}.jpg`)
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Landschaften-${String(i+1).padStart(3, '0')}.jpg`)
         }
       ];
       
@@ -755,45 +845,50 @@
         portfolioGallery.appendChild(container);
       });
       
-      /* --- Lightbox-Funktionen --- */
+      /* --- Lightbox-Funktionen wie im Original --- */
       function openLightbox(initialSrc, imageList) {
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
         images = imageList;
         currentIndex = images.indexOf(initialSrc);
         if (currentIndex === -1) currentIndex = 0;
         currentPosition = -currentIndex * 100;
+        
         sliderContainer.innerHTML = '';
-        images.forEach(src => {
+        images.forEach(img => {
           const slide = document.createElement('div');
           slide.className = 'slider-item';
-          slide.innerHTML = `<img src="${src}" alt="Gallery Image">`;
+          slide.innerHTML = `<img src="${img}" alt="Gallery Image">`;
           sliderContainer.appendChild(slide);
         });
+    
         sliderContainer.style.transition = 'none';
         sliderContainer.style.transform = `translateX(${currentPosition}%)`;
-        lightbox.classList.add('active');
+        lightbox.classList.add("active");
         preloadNeighbors(currentIndex);
       }
       
       function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
+        document.documentElement.style.overflow = "";
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "auto";
       }
       
       function changeImage(n, animate = false) {
-        if (isAnimating) return;
-        currentIndex = (currentIndex + n + images.length) % images.length;
-        currentPosition = -currentIndex * 100;
-        if (animate) {
+        const newIndex = (currentIndex + n + images.length) % images.length;
+        
+        if(animate) {
           isAnimating = true;
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
         } else {
           sliderContainer.style.transition = 'none';
         }
+    
+        currentIndex = newIndex;
+        currentPosition = -currentIndex * 100;
         sliderContainer.style.transform = `translateX(${currentPosition}%)`;
-        if (animate) {
+    
+        if(animate) {
           sliderContainer.addEventListener('transitionend', () => {
             isAnimating = false;
             preloadNeighbors(currentIndex);
@@ -810,7 +905,7 @@
         new Image().src = images[nextIndex];
       }
       
-      /* --- Touch-Handling für Lightbox (Horizontal zum Wechseln & Vertikal zum Schließen auf Mobile) --- */
+      /* --- Touch Handling (wie original) --- */
       function handleTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -820,20 +915,46 @@
       function handleTouchMove(e) {
         e.preventDefault();
         if (isAnimating) return;
-        const deltaX = e.touches[0].clientX - touchStartX;
+        
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+    
+        // Vertikales Wischen priorisieren
+        if(Math.abs(deltaY) > Math.abs(deltaX)) {
+          const dampenedDelta = deltaY * 0.3;
+          sliderContainer.style.transform = `translateY(${dampenedDelta}px)`;
+          return;
+        }
+    
+        // Horizontales Wischen
         const movePercentage = (deltaX / window.innerWidth) * 100;
-        sliderContainer.style.transform = `translateX(${currentPosition + movePercentage}%)`;
+        let newPosition = currentPosition + movePercentage;
+        
+        // Endlos-Loop Logik
+        if(currentIndex === 0 && newPosition > 0) newPosition = -images.length * 100 + movePercentage;
+        if(currentIndex === images.length-1 && newPosition < -currentIndex * 100) newPosition = 100 + movePercentage;
+        
+        sliderContainer.style.transform = `translateX(${newPosition}%)`;
       }
       
       function handleTouchEnd(e) {
-        const deltaX = e.changedTouches[0].clientX - touchStartX;
-        const deltaY = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 100) {
-          // Vertikaler Swipe: Lightbox schließen
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const deltaX = endX - touchStartX;
+        const deltaY = endY - touchStartY;
+        
+        // Vertikales Wischen (Schließen)
+        if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
-        } else if (Math.abs(deltaX) > window.innerWidth * 0.15) {
-          changeImage(deltaX > 0 ? -1 : 1, true);
+        }
+    
+        // Horizontales Wischen (Bildwechsel)
+        if(Math.abs(deltaX) > window.innerWidth * 0.15) {
+          const direction = deltaX > 0 ? -1 : 1;
+          changeImage(direction, true);
         } else {
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
           sliderContainer.style.transform = `translateX(${currentPosition}%)`;
@@ -847,15 +968,15 @@
       
       // Schließen bei Klick auf den Hintergrund
       lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
+        if(e.target === lightbox) closeLightbox();
       });
       
       // Tastatur-Navigation
       document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'ArrowLeft') changeImage(-1);
-        else if (e.key === 'ArrowRight') changeImage(1);
-        else if (e.key === 'Escape') closeLightbox();
+        if(!lightbox.classList.contains('active')) return;
+        if(e.key === 'ArrowLeft') changeImage(-1);
+        else if(e.key === 'ArrowRight') changeImage(1);
+        else if(e.key === 'Escape') closeLightbox();
       });
       
       // Pfeil-Buttons
@@ -869,7 +990,7 @@
       });
       
       // Schließen-Button (X) für Desktop
-      if (closeButton) {
+      if(closeButton) {
         closeButton.addEventListener('click', (e) => {
           e.stopPropagation();
           closeLightbox();
