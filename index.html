@@ -357,7 +357,6 @@
       width: 100%;
       overflow: hidden;
     }
-    /* Desktop: Grid */
     @media (min-width: 769px) {
       .services-container {
         display: grid;
@@ -368,7 +367,6 @@
         padding: 20px;
       }
     }
-    /* Mobile: Slider-Ansicht */
     @media (max-width: 768px) {
       .services-container {
         display: flex;
@@ -376,13 +374,13 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
+        /* Wichtig: Container soll so breit sein wie alle Service-Karten zusammen */
+        width: max-content;
       }
-      /* Jede Service-Karte erhält jetzt 100vw */
       .service-card {
         flex: 0 0 100vw;
         scroll-snap-align: start;
       }
-      /* Indikatoren unterhalb des Sliders */
       .services-indicators {
         display: flex;
         justify-content: center;
@@ -991,23 +989,26 @@
     
         // Horizontales Wischen
         const movePercentage = (deltaX / window.innerWidth) * 100;
-        // Hier ist die Änderung: Wir benutzen "vw" statt "%" für den Slider
-        servicesContainerTransform = servicesIndex * 100 - movePercentage;
-        sliderContainer.style.transform = `translateX(-${servicesContainerTransform}vw)`;
+        let newPosition = currentPosition + movePercentage;
+        
+        // Endlos-Loop Logik
+        if(currentIndex === 0 && newPosition > 0) newPosition = -images.length * 100 + movePercentage;
+        if(currentIndex === images.length-1 && newPosition < -currentIndex * 100) newPosition = 100 + movePercentage;
+        
+        sliderContainer.style.transform = `translateX(${newPosition}%)`;
       }
       
       function handleTouchEnd(e) {
-        const sliderEndX = e.changedTouches[0].clientX;
-        const delta = sliderEndX - touchStartX;
+        const endX = e.changedTouches[0].clientX;
+        const deltaX = endX - touchStartX;
         
-        // Bei horizontalem Swipe: Slide wechseln, falls ausreichend bewegt wurde
-        if(Math.abs(delta) > window.innerWidth * 0.15) {
-          const direction = delta > 0 ? -1 : 1;
-          servicesIndex = (servicesIndex + direction + totalSlides) % totalSlides;
+        if(Math.abs(deltaX) > window.innerWidth * 0.15) {
+          const direction = deltaX > 0 ? -1 : 1;
+          changeImage(direction, false);
+        } else {
+          sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
+          sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         }
-        // Hier wird der Slider in die exakte Position "eingerastet"
-        sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
-        sliderContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
       }
       
       lightbox.addEventListener('touchstart', handleTouchStart);
@@ -1089,7 +1090,6 @@
           }
           dot.addEventListener('click', () => {
             servicesIndex = i;
-            // Hier verwenden wir vw, damit wirklich um 100vw pro Slide verschoben wird
             servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
             updateIndicators();
           });
@@ -1110,7 +1110,6 @@
           if(Math.abs(deltaX) > Math.abs(deltaY)) {
             e.preventDefault();
             const movePercentage = (deltaX / window.innerWidth) * 100;
-            // Verschiebung in vw: Aktueller Index * 100 minus den Anteil des Swipes
             servicesContainer.style.transform = `translateX(-${servicesIndex * 100 - movePercentage}vw)`;
           }
         });
@@ -1118,7 +1117,6 @@
           const sliderEndX = e.changedTouches[0].clientX;
           const delta = sliderEndX - sliderStartX;
     
-          // Falls Wischbewegung ausreichend war, Slide wechseln
           if (Math.abs(delta) > 50) {
             if(delta < 0 && servicesIndex < totalSlides - 1) {
               servicesIndex++;
@@ -1127,11 +1125,9 @@
             }
           }
           
-          // Übergangsanimation hinzufügen und anschließend "einrasten"
           servicesContainer.style.transition = 'transform 0.3s ease';
           servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
           updateIndicators();
-          // Transition nach Abschluss entfernen
           setTimeout(() => {
             servicesContainer.style.transition = 'none';
           }, 300);
