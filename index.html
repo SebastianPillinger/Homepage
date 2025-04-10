@@ -76,8 +76,8 @@
       font-size: 1.6em;
       transition: color 0.3s ease;
     }
-    
-    /* Über mobiles Menü: kleinere Schriftgröße */
+    nav a:hover { color: var(--accent1-color); }
+    /* Auf mobilen Geräten Navigation verkleinern */
     @media (max-width: 768px) {
       nav a { font-size: 1.2em; margin: 0 10px; }
     }
@@ -316,7 +316,7 @@
       font-size: 1.4em;
       text-align: justify;
     }
-    /* Text im Über-mich-Bereich etwas kleiner auf mobilen Geräten */
+    /* Schrift im Über-mich-Bereich für mobile Geräte etwas verkleinern */
     @media (max-width: 768px) {
       .about-text { font-size: 1.2em; }
     }
@@ -344,27 +344,31 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
     
-    /* Leistungen – Standard: Grid mit maximal 3 nebeneinander */
+    /* Leistungen – für Desktop: Grid mit maximal 3 nebeneinander; 
+       für Mobile: Slider, der nur 1 Karte anzeigt und per Klick bzw. Swipe navigierbar ist */
     .services-slider-wrapper {
       position: relative;
-      overflow: hidden; /* Hiermit wird verhindert, dass der Slider die ganze Seite verschiebt */
+      width: 100%;
+      overflow: hidden; /* Verhindert horizontales Scrollen der gesamten Seite */
     }
-    .services-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      transition: transform 0.3s ease;
+    /* Desktop-Ansicht: Grid */
+    @media (min-width: 769px) {
+      .services-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
     }
-    
-    /* Mobile: Slider-Ansicht, jeweils 1 Karte, mit Swipe-Steuerung */
+    /* Mobile-Ansicht: Slider */
     @media (max-width: 768px) {
       .services-container {
         display: flex;
         overflow: hidden;
         scroll-snap-type: x mandatory;
+        transition: transform 0.3s ease;
       }
       .service-card {
         flex: 0 0 100%;
@@ -680,9 +684,7 @@
   </section>
   
   <!-- Leistungen -->
-  <!-- Hier wird der Bereich immer angezeigt.
-       Auf Desktop erscheint ein Grid (maximal 3 nebeneinander).
-       Auf mobilen Geräten wird ein Slider realisiert, der per Touch und über Schaltflächen gesteuert werden kann. -->
+  <!-- Auf Desktop: Grid (maximal 3 nebeneinander), auf Mobile: Slider (einzelne Karte, per Klick/Swipe navigierbar) -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-slider-wrapper">
@@ -742,7 +744,7 @@
           </div>
         </div>
       </div>
-      <!-- Slider Controls – erscheinen nur auf mobilen Geräten -->
+      <!-- Slider Controls – erscheinen nur bei mobilen Geräten -->
       <div class="services-slider-controls">
         <button id="services-prev" aria-label="Vorherige Leistung">&#10094;</button>
         <button id="services-next" aria-label="Nächste Leistung">&#10095;</button>
@@ -929,7 +931,7 @@
         document.body.style.overflow = "auto";
       }
       
-      // Beim Klick auf Pfeile oder Tastatur sollen die Übergänge sprunghaft erfolgen (ohne weiche Transition)
+      // Bei Klick auf Pfeile oder Tastatur sollen die Übergänge sprunghaft (ohne weiche Animation) erfolgen
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
         
@@ -1001,7 +1003,7 @@
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
         
-        // Vertikales Wischen (Schließen, wenn ausreichend vertikal gewischt wurde)
+        // Vertikales Wischen: Schließen bei ausreichend starkem Swipe
         if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
@@ -1085,11 +1087,24 @@
         const totalSlides = document.querySelectorAll('.service-card').length;
         const servicesWrapper = document.querySelector('.services-slider-wrapper');
         
-        // Touch-Handling für den Services-Slider, damit nicht die ganze Seite verschoben wird
+        // Variablen für Touch im Slider
         let sliderStartX = 0;
+        let sliderStartY = 0;
+        
         servicesWrapper.addEventListener('touchstart', (e) => {
           sliderStartX = e.touches[0].clientX;
+          sliderStartY = e.touches[0].clientY;
         });
+        
+        // Verhindere horizontales Scrollen der gesamten Homepage, wenn im Slider gewischt wird
+        servicesWrapper.addEventListener('touchmove', (e) => {
+          let deltaX = e.touches[0].clientX - sliderStartX;
+          let deltaY = e.touches[0].clientY - sliderStartY;
+          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+            e.preventDefault();
+          }
+        });
+        
         servicesWrapper.addEventListener('touchend', (e) => {
           const sliderEndX = e.changedTouches[0].clientX;
           const delta = sliderEndX - sliderStartX;
@@ -1103,7 +1118,7 @@
           }
         });
         
-        // Auch Klick-Events für die Schaltflächen sind aktiv
+        // Klick-Events für die Pfeiltasten im Slider
         document.getElementById('services-prev').addEventListener('click', () => {
           servicesIndex = Math.max(servicesIndex - 1, 0);
           servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
