@@ -205,7 +205,7 @@
       transition: none !important;
       cursor: default;
     }
-    /* Pfeile in der Lightbox */
+    /* Pfeile in der Lightbox – Übergang sprunghaft bei Klick */
     .lightbox-arrow {
       position: absolute;
       top: 50%;
@@ -336,15 +336,50 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
     
-    /* Leistungen (jetzt immer sichtbar) */
+    /* Leistungen – Standard: Grid mit maximal 3 nebeneinander */
+    .services-slider-wrapper {
+      position: relative;
+    }
     .services-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+      transition: transform 0.3s ease;
     }
+    /* Mobile: Slider-Ansicht, jeweils 1 Karte */
+    @media (max-width: 768px) {
+      .services-container {
+        display: flex;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+      }
+      .service-card {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+      }
+      .services-slider-controls {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+      }
+      .services-slider-controls button {
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: white;
+        font-size: 2em;
+        padding: 0 10px;
+        cursor: pointer;
+        pointer-events: all;
+      }
+    }
+    
     .service-card {
       background: var(--background1-color);
       overflow: hidden;
@@ -635,62 +670,70 @@
   </section>
   
   <!-- Leistungen -->
+  <!-- Für mobile Ansicht wird hier ein Slider genutzt, für Desktop ein Grid (max. 3 nebeneinander) -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
-    <div class="services-container">
-      <div class="service-card">
-        <div class="service-image">
-          <img src="bilder/Hochzeit-001.jpg" alt="Hochzeitsfotografie" loading="lazy">
+    <div class="services-slider-wrapper">
+      <div class="services-container">
+        <div class="service-card">
+          <div class="service-image">
+            <img src="bilder/Hochzeit-001.jpg" alt="Hochzeitsfotografie" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Hochzeitsfotografie</h3>
+            <p>Individuelle Begleitung Ihres besonderen Tages - von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
+            <ul class="service-features">
+              <li>✔ Vor-Ort-Termin & Planung</li>
+              <li>✔ 8-12 Stunden Coverage</li>
+              <li>✔ 300+ hochwertige Bilder</li>
+              <li>✔ Professionelle Bearbeitung</li>
+              <li>✔ Online-Galerie & USB-Stick</li>
+            </ul>
+            <div class="service-price">ab €1.490</div>
+            <a href="#contact" class="service-button">Anfragen</a>
+          </div>
         </div>
-        <div class="service-content">
-          <h3>Hochzeitsfotografie</h3>
-          <p>Individuelle Begleitung Ihres besonderen Tages - von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
-          <ul class="service-features">
-            <li>✔ Vor-Ort-Termin & Planung</li>
-            <li>✔ 8-12 Stunden Coverage</li>
-            <li>✔ 300+ hochwertige Bilder</li>
-            <li>✔ Professionelle Bearbeitung</li>
-            <li>✔ Online-Galerie & USB-Stick</li>
-          </ul>
-          <div class="service-price">ab €1.490</div>
-          <a href="#contact" class="service-button">Anfragen</a>
+        <div class="service-card">
+          <div class="service-image">
+            <img src="bilder/Event-002.jpg" alt="Eventfotografie" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Events & Partys</h3>
+            <p>Professionelle Dokumentation Ihrer Veranstaltung mit lebendigen, authentischen Bildern, die Stimmung und Atmosphäre perfekt transportieren.</p>
+            <ul class="service-features">
+              <li>✔ Individuelles Konzept</li>
+              <li>✔ 4-8 Stunden Coverage</li>
+              <li>✔ 150+ ausgewählte Bilder</li>
+              <li>✔ Schnelle Lieferung</li>
+              <li>✔ Social-Media-Optimierung</li>
+            </ul>
+            <div class="service-price">ab €790</div>
+            <a href="#contact" class="service-button">Anfragen</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-image">
+            <img src="bilder/Event-003.jpg" alt="Sportfotografie" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Sportveranstaltungen</h3>
+            <p>Dynamische Action-Aufnahmen, die die Energie und Leidenschaft des Sports einfangen. Perfekt für Vereine, Wettkämpfe und individuelle Athleten.</p>
+            <ul class="service-features">
+              <li>✔ Vorab-Besprechung</li>
+              <li>✔ Flexible Zeitpakete</li>
+              <li>✔ Hochgeschwindigkeitsaufnahmen</li>
+              <li>✔ Team- & Einzelporträts</li>
+              <li>✔ Schnittservice für Vereine</li>
+            </ul>
+            <div class="service-price">ab €590</div>
+            <a href="#contact" class="service-button">Anfragen</a>
+          </div>
         </div>
       </div>
-      <div class="service-card">
-        <div class="service-image">
-          <img src="bilder/Event-002.jpg" alt="Eventfotografie" loading="lazy">
-        </div>
-        <div class="service-content">
-          <h3>Events & Partys</h3>
-          <p>Professionelle Dokumentation Ihrer Veranstaltung mit lebendigen, authentischen Bildern, die Stimmung und Atmosphäre perfekt transportieren.</p>
-          <ul class="service-features">
-            <li>✔ Individuelles Konzept</li>
-            <li>✔ 4-8 Stunden Coverage</li>
-            <li>✔ 150+ ausgewählte Bilder</li>
-            <li>✔ Schnelle Lieferung</li>
-            <li>✔ Social-Media-Optimierung</li>
-          </ul>
-          <div class="service-price">ab €790</div>
-          <a href="#contact" class="service-button">Anfragen</a>
-        </div>
-      </div>
-      <div class="service-card">
-        <div class="service-image">
-          <img src="bilder/Event-003.jpg" alt="Sportfotografie" loading="lazy">
-        </div>
-        <div class="service-content">
-          <h3>Sportveranstaltungen</h3>
-          <p>Dynamische Action-Aufnahmen, die die Energie und Leidenschaft des Sports einfangen. Perfekt für Vereine, Wettkämpfe und individuelle Athleten.</p>
-          <ul class="service-features">
-            <li>✔ Vorab-Besprechung</li>
-            <li>✔ Flexible Zeitpakete</li>
-            <li>✔ Hochgeschwindigkeitsaufnahmen</li>
-            <li>✔ Team- & Einzelporträts</li>
-            <li>✔ Schnittservice für Vereine</li>
-          </ul>
-          <div class="service-price">ab €590</div>
-          <a href="#contact" class="service-button">Anfragen</a>
-        </div>
+      <!-- Slider Controls – nur auf mobilen Geräten sichtbar -->
+      <div class="services-slider-controls">
+        <button id="services-prev" aria-label="Vorherige Leistung">&#10094;</button>
+        <button id="services-next" aria-label="Nächste Leistung">&#10095;</button>
       </div>
     </div>
   </section>
@@ -845,7 +888,7 @@
         portfolioGallery.appendChild(container);
       });
       
-      /* --- Lightbox-Funktionen wie im Original --- */
+      /* --- Lightbox-Funktionen (wie original) --- */
       function openLightbox(initialSrc, imageList) {
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
@@ -874,9 +917,9 @@
         document.body.style.overflow = "auto";
       }
       
+      // Bei Klick auf Pfeile soll der Übergang sprunghaft (ohne Animation) erfolgen
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
-        
         if(animate) {
           isAnimating = true;
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
@@ -905,7 +948,7 @@
         new Image().src = images[nextIndex];
       }
       
-      /* --- Touch Handling (wie original) --- */
+      /* --- Touch-Handling für Lightbox (wie original) --- */
       function handleTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -921,7 +964,7 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
-        // Vertikales Wischen priorisieren
+        // Vertikales Wischen priorisieren (mit dampening)
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
           const dampenedDelta = deltaY * 0.3;
           sliderContainer.style.transform = `translateY(${dampenedDelta}px)`;
@@ -945,7 +988,7 @@
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
         
-        // Vertikales Wischen (Schließen)
+        // Vertikales Wischen (Schließen bei ausreichend vertikalem Swipe)
         if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
@@ -954,14 +997,14 @@
         // Horizontales Wischen (Bildwechsel)
         if(Math.abs(deltaX) > window.innerWidth * 0.15) {
           const direction = deltaX > 0 ? -1 : 1;
-          changeImage(direction, true);
+          changeImage(direction, false); // sprunghafter Übergang
         } else {
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
           sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         }
       }
       
-      /* --- Event-Listener --- */
+      /* --- Event-Listener für Lightbox --- */
       lightbox.addEventListener('touchstart', handleTouchStart);
       lightbox.addEventListener('touchmove', handleTouchMove);
       lightbox.addEventListener('touchend', handleTouchEnd);
@@ -974,19 +1017,19 @@
       // Tastatur-Navigation
       document.addEventListener('keydown', (e) => {
         if(!lightbox.classList.contains('active')) return;
-        if(e.key === 'ArrowLeft') changeImage(-1);
-        else if(e.key === 'ArrowRight') changeImage(1);
+        if(e.key === 'ArrowLeft') changeImage(-1, false);
+        else if(e.key === 'ArrowRight') changeImage(1, false);
         else if(e.key === 'Escape') closeLightbox();
       });
       
-      // Pfeil-Buttons
+      // Pfeil-Buttons – nun sprunghaft (ohne Animation)
       arrowLeft.addEventListener('click', (e) => {
         e.stopPropagation();
-        changeImage(-1, true);
+        changeImage(-1, false);
       });
       arrowRight.addEventListener('click', (e) => {
         e.stopPropagation();
-        changeImage(1, true);
+        changeImage(1, false);
       });
       
       // Schließen-Button (X) für Desktop
@@ -1021,6 +1064,25 @@
           copyToClipboard(el.getAttribute('data-clipboard'));
         });
       });
+      
+      /* --- Slider für den Leistungen-Bereich auf mobilen Geräten --- */
+      // Nur auf mobilen Ansichten aktivieren
+      if(window.innerWidth <= 768) {
+        let servicesIndex = 0;
+        const servicesContainer = document.querySelector('.services-container');
+        const serviceCards = document.querySelectorAll('.service-card');
+        const totalSlides = serviceCards.length;
+        
+        // Event-Listener für die Slider-Steuerung
+        document.getElementById('services-prev').addEventListener('click', () => {
+          servicesIndex = Math.max(servicesIndex - 1, 0);
+          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+        });
+        document.getElementById('services-next').addEventListener('click', () => {
+          servicesIndex = Math.min(servicesIndex + 1, totalSlides - 1);
+          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+        });
+      }
       
       /* --- Touch-Event für Highlight-Bereich --- */
       const highlightContainer = document.getElementById('highlight-container');
