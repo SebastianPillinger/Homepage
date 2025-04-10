@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sebastian Pillinger – Fotografie für Hochzeiten, Events und Unternehmen in Graz. Jetzt anfragen!">
+  <meta name="keywords" content="Fotograf, Hochzeitsfotografie, Eventfotografie, Graz, Sebastian Pillinger">
+  <meta property="og:title" content="Sebastian Pillinger – Fotografie">
+  <meta property="og:description" content="Fotografie für Hochzeiten, Events und Unternehmen in Graz. Jetzt anfragen!">
+  <meta property="og:image" content="https://www.deinewebsite.de/bilder/header.jpg">
+  <meta property="og:url" content="https://www.deinewebsite.de">
+  <title>Sebastian Pillinger – Fotografie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS-Variablen */
+    :root {
+      --accent1-color: hsl(36, 35%, 50%);
+      --accent2-color: hsl(36, 45%, 40%);
+      --dark-color: hsl(0, 0%, 17%);
+      --background0-color: hsl(0, 0%, 10%);
+      --background1-color: hsl(0, 0%, 12%);
+      --text-color: hsl(0, 0%, 98%);
+      --light: hsl(0, 0%, 98%);
+      --overlay: linear-gradient(45deg, rgba(15,15,15,0.7) 0%, rgba(5,5,5,0.8) 100%);
+      --transition-timing: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    
+    /* Globaler Reset & Box-Sizing */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Playfair Display', serif;
+      color: var(--text-color);
+      background-color: var(--background0-color);
+      line-height: 1.6;
+    }
+    
+    /* Custom Font */
+    @font-face {
+      font-family: 'Anurati';
+      src: url('fonts/anurati.ttf') format('truetype');
+    }
+    
+    /* Scroll-Animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scroll-animation {
+      opacity: 0;
+      animation-duration: 1s;
+      animation-fill-mode: forwards;
+    }
+    .animate { animation-name: fadeInUp; }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(44, 44, 44, 0.9);
+      padding: 15px 0;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 1.6em;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: var(--accent1-color); }
+    
+    /* Sections */
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: var(--overlay), url('bilder/header.jpg');
+      filter: brightness(1.2) contrast(1.05);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+    .name-title {
+      font-family: 'Anurati', 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      margin-bottom: 2rem;
+    }
+    .first-name { font-size: clamp(3rem, 12vw, 6rem); color: var(--light); display: block; }
+    .last-name { font-size: clamp(2.5rem, 10vw, 4.5rem); color: var(--accent1-color); display: block; margin-top: -0.5rem; }
+    .name-subtitle {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: clamp(0.8rem, 2vw, 1.2rem);
+      margin: 1rem 0;
+    }
+    h2 {
+      font-size: 2em;
+      color: var(--text-color);
+      margin-bottom: 40px;
+    }
+    
+    /* Portfolio Gallery */
+    .portfolio-section {
+      background: var(--background1-color);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+    .image-container {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.7s ease;
+    }
+    .image-container:hover img { transform: scale(1.1); filter: brightness(0.3); }
+    .overlay-text {
+      font-family: 'Anurati', 'Playfair Display', sans-serif;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2em;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .image-container img { filter: brightness(0.7); }
+      .overlay-text { opacity: 1; }
+    }
+    @media (min-width: 769px) {
+      .image-container:hover .overlay-text { opacity: 1; }
+    }
+    
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      touch-action: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+    .slider-container {
+      display: flex;
+      width: 100%;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .slider-item {
+      flex: 0 0 100%;
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: auto;
+    }
+    .slider-item img {
+      max-width: 90%;
+      max-height: 90vh;
+      object-fit: contain;
+      transition: none !important;
+      cursor: default;
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5em;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px 20px;
+      z-index: 1001;
+      transition: opacity 0.2s;
+      pointer-events: auto;
+    }
+    .lightbox-arrow:hover { opacity: 0.8; }
+    .lightbox-arrow.left { left: 20px; }
+    .lightbox-arrow.right { right: 20px; }
+    @media (max-width: 768px) {
+      .lightbox-arrow { font-size: 3em; padding: 5px 10px; }
+    }
+    
+    /* Highlight Section */
+    .highlight-section {
+      position: relative;
+      margin: 100px 0;
+      padding: 20px;
+      background: transparent;
+    }
+    .highlight-container {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      transition: transform 0.8s var(--transition-timing);
+    }
+    .highlight-container:hover { transform: scale(1.02); }
+    .highlight-image {
+      width: 100%;
+      height: 80vh;
+      object-fit: cover;
+      filter: grayscale(20%) contrast(110%);
+      transition: filter 0.8s ease;
+    }
+    .highlight-container:hover .highlight-image { filter: grayscale(0%) contrast(120%) brightness(70%); }
+    .highlight-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+      color: var(--light);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .highlight-content h3 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin: 0;
+      line-height: 1.1;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s var(--transition-timing);
+    }
+    .highlight-subline,
+    .highlight-meta {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s var(--transition-timing);
+    }
+    .highlight-container:hover .highlight-content h3,
+    .highlight-container:hover .highlight-subline,
+    .highlight-container:hover .highlight-meta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .highlight-container.touch-active .highlight-image {
+      filter: brightness(0.7) contrast(1.2) !important;
+    }
+    
+    /* Über mich */
+    .about-container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      text-align: left;
+      background-color: var(--background1-color);
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .about-text {
+      max-width: 600px;
+      font-size: 1.4em;
+      text-align: justify;
+    }
+    .about-image img {
+      width: 300px;
+      height: 200px;
+      transition: transform 0.5s ease, box-shadow 0.6s ease;
+    }
+    .about-image img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+    }
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: var(--accent1-color);
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .cta-button:hover {
+      background-color: var(--accent2-color);
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+    }
+    /* Leistungen */
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .service-card {
+      background: var(--background1-color);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: transform 0.5s var(--transition-timing), box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    .service-image {
+      height: 250px;
+      overflow: hidden;
+    }
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .service-card:hover .service-image img { transform: scale(1.05); }
+    .service-content {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-content h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--accent1-color);
+      position: relative;
+      padding-bottom: 10px;
+    }
+    .service-content h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--accent1-color);
+    }
+    .service-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    .service-features {
+      margin: 20px 0;
+      padding: 0;
+      list-style: none;
+      flex-grow: 1;
+    }
+    .service-features li {
+      padding: 8px 0;
+      font-size: 1rem;
+      position: relative;
+      padding-left: 25px;
+      color: var(--text-color);
+    }
+    .service-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent1-color);
+      font-weight: bold;
+    }
+    .service-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent1-color);
+      margin: 15px 0;
+      text-align: right;
+    }
+    .service-button {
+      text-align: center;
+      padding: 12px 20px;
+      background: var(--accent1-color);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-top: auto;
+    }
+    .service-button:hover {
+      background: var(--accent2-color);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+      .services-container { grid-template-columns: 1fr; padding: 10px; }
+      .service-content h3 { font-size: 1.5rem; }
+      .service-content p { font-size: 1rem; }
+      .about-container { flex-direction: column; text-align: center; }
+      .about-image img { width: 100%; max-width: 300px; }
+      h2 { font-size: 1.5em; }
+      .cta-button { font-size: 0.8em; padding: 10px 20px; margin-top: 15px; }
+    }
+    
+    /* Kundenfeedback */
+    .testimonials-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .testimonial-card {
+      background: var(--background1-color);
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      transition: transform 0.5s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .testimonial-card:hover { transform: translateY(-5px); }
+    .testimonial-image {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+    .testimonial-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.9);
+      transition: transform 0.8s ease, filter 0.5s ease;
+    }
+    .testimonial-card:hover .testimonial-image img {
+      transform: scale(1.05);
+      filter: brightness(1);
+    }
+    .client-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--overlay);
+      padding: 15px;
+      color: white;
+    }
+    .client-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
+    .client-event { font-size: 0.9rem; opacity: 0.8; }
+    .testimonial-content {
+      padding: 25px;
+      flex-grow: 1;
+      position: relative;
+    }
+    .quote-icon {
+      position: absolute;
+      top: 10px;
+      left: 25px;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--accent1-color);
+      opacity: 0.2;
+      font-family: 'Playfair Display', serif;
+    }
+    blockquote {
+      margin: 20px 0 0 0;
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-color);
+      position: relative;
+      z-index: 1;
+    }
+    .rating {
+      color: var(--accent1-color);
+      font-size: 1.3rem;
+      margin-top: 20px;
+      letter-spacing: 3px;
+    }
+    @media (max-width: 768px) {
+      .testimonials-container { grid-template-columns: 1fr; }
+      .testimonial-image { height: 180px; }
+      blockquote { font-size: 1rem; }
+    }
+    
+    /* Kontakt */
+    #contact {
+      background-color: var(--background1-color);
+      color: white;
+      padding: 60px 20px;
+      margin-top: 80px;
+    }
+    #contact h2 { color: white; }
+    #contact p { font-size: 1.6em; margin: 10px 0; }
+    .contact-link {
+      color: var(--accent1-color);
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .contact-link:hover { color: var(--accent2-color); }
+    @media (max-width: 768px) {
+      #contact p { font-size: 1.2em; }
+      #contact p:last-child a { font-size: 1em; }
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 30px;
+      margin-top: 80px;
+      font-size: 1.2em;
+    }
+    footer a {
+      color: var(--accent1-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover { color: var(--accent2-color); }
+  </style>
+</head>
+<body>
+  <!-- Hauptnavigation -->
+  <nav aria-label="Hauptnavigation" id="main-nav">
+    <a href="#portfolio">Portfolio</a>
+    <a href="#about">Über mich</a>
+    <a href="#services">Leistungen</a>
+    <a href="#testimonials">Kundenfeedback</a>
+    <a href="#contact">Kontakt</a>
+  </nav>
+  
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1 class="name-title">
+        <span class="first-name">Sebastian</span>
+        <span class="last-name">Pillinger</span>
+      </h1>
+      <p class="name-subtitle">Fotografie & Bildkunst</p>
+      <div class="hero-meta">
+        <p class="location">📍 Graz & Österreichweit</p>
+        <div class="awards">
+          <br><br><br>
+        </div>
+      </div>
+      <a href="#contact" class="cta-button" aria-label="Kontaktiere mich">Jetzt Termin vereinbaren</a>
+    </div>
+    <div class="scroll-indicator"></div>
+  </header>
+  
+  <!-- Portfolio -->
+  <section id="portfolio" class="scroll-animation">
+    <h2>Portfolio</h2>
+    <div class="portfolio-section" id="portfolio-gallery">
+      <!-- Dynamisch geladene Bilder -->
+    </div>
+  </section>
+  
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="slider-container" id="slider-container"></div>
+    <span class="lightbox-arrow left" aria-label="Vorheriges Bild"></span>
+    <span class="lightbox-arrow right" aria-label="Nächstes Bild"></span>
+  </div>
+  
+  <!-- Highlight Section -->
+  <section class="highlight-section scroll-animation">
+    <div class="highlight-container" id="highlight-container">
+      <img src="bilder/highlight.jpg" alt="Meisterwerk der Eventfotografie" loading="lazy" class="highlight-image">
+      <div class="highlight-content">
+        <h3>Aktuelles Highlight</h3>
+        <p class="highlight-subline">Norwegen: Trondheim Universität NTNU</p>
+        <div class="highlight-meta">
+          <span>🏆 Ausgezeichnete Bildkomposition</span>
+          <span>✨ Premium Post-Production</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Über mich -->
+  <section id="about" class="scroll-animation">
+    <h2>Über mich</h2>
+    <div class="about-container">
+      <div class="about-text">
+        <p>Hey, ich bin Sebastian! Ich liebe es, echte Momente einzufangen – die strahlenden Augen einer Braut, das ausgelassene Lachen auf einer Feier oder die besonderen Details eines einzigartigen Tages. Fotografie ist für mich mehr als ein Job – es ist meine Art, Geschichten zu erzählen.</p>
+        <p>Seit über 10 Jahren halte ich mit meiner Kamera Erinnerungen fest, sei es bei Hochzeiten, Events oder spannenden Projekten. Dabei ist mir eines besonders wichtig: Ihr sollt euch wohlfühlen! Denn die schönsten Bilder entstehen, wenn ihr einfach ihr selbst seid. Lass uns gemeinsam Momente schaffen, die bleiben!</p>
+        <a href="#contact" class="cta-button" aria-label="Kontaktiere mich">Jetzt Termin vereinbaren</a>
+      </div>
+      <div class="about-image">
+        <img src="bilder/portrait.jpg" alt="Sebastian Pillinger" loading="lazy">
+      </div>
+    </div>
+  </section>
+  
+  <!-- Leistungen -->
+  <section id="services" class="scroll-animation">
+    <h2>Leistungen</h2>
+    <div class="services-container">
+      <div class="service-card">
+        <div class="service-image">
+          <img src="bilder/hochzeit1.jpg" alt="Hochzeitsfotografie" loading="lazy">
+        </div>
+        <div class="service-content">
+          <h3>Hochzeitsfotografie</h3>
+          <p>Individuelle Begleitung Ihres besonderen Tages - von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
+          <ul class="service-features">
+            <li>✔ Vor-Ort-Termin & Planung</li>
+            <li>✔ 8-12 Stunden Coverage</li>
+            <li>✔ 300+ hochwertige Bilder</li>
+            <li>✔ Professionelle Bearbeitung</li>
+            <li>✔ Online-Galerie & USB-Stick</li>
+          </ul>
+          <div class="service-price">ab €1.490</div>
+          <a href="#contact" class="service-button">Anfragen</a>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-image">
+          <img src="bilder/party1.jpg" alt="Eventfotografie" loading="lazy">
+        </div>
+        <div class="service-content">
+          <h3>Events & Partys</h3>
+          <p>Professionelle Dokumentation Ihrer Veranstaltung mit lebendigen, authentischen Bildern, die Stimmung und Atmosphäre perfekt transportieren.</p>
+          <ul class="service-features">
+            <li>✔ Individuelles Konzept</li>
+            <li>✔ 4-8 Stunden Coverage</li>
+            <li>✔ 150+ ausgewählte Bilder</li>
+            <li>✔ Schnelle Lieferung</li>
+            <li>✔ Social-Media-Optimierung</li>
+          </ul>
+          <div class="service-price">ab €790</div>
+          <a href="#contact" class="service-button">Anfragen</a>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-image">
+          <img src="bilder/rr1.jpg" alt="Sportfotografie" loading="lazy">
+        </div>
+        <div class="service-content">
+          <h3>Sportveranstaltungen</h3>
+          <p>Dynamische Action-Aufnahmen, die die Energie und Leidenschaft des Sports einfangen. Perfekt für Vereine, Wettkämpfe und individuelle Athleten.</p>
+          <ul class="service-features">
+            <li>✔ Vorab-Besprechung</li>
+            <li>✔ Flexible Zeitpakete</li>
+            <li>✔ Hochgeschwindigkeitsaufnahmen</li>
+            <li>✔ Team- & Einzelporträts</li>
+            <li>✔ Schnittservice für Vereine</li>
+          </ul>
+          <div class="service-price">ab €590</div>
+          <a href="#contact" class="service-button">Anfragen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Kundenfeedback -->
+  <section id="testimonials" class="scroll-animation">
+    <h2>Was Kunden sagen</h2>
+    <div class="testimonials-container">
+      <div class="testimonial-card">
+        <div class="testimonial-image">
+          <img src="bilder/hochzeit2.jpg" alt="Anna und Markus" loading="lazy">
+          <div class="client-info">
+            <div class="client-name">Anna & Markus</div>
+            <div class="client-event">Hochzeit in Graz</div>
+          </div>
+        </div>
+        <div class="testimonial-content">
+          <div class="quote-icon">“</div>
+          <blockquote>
+            <p>Sebastian hat unsere Hochzeit perfekt festgehalten. Er war unauffällig, aber immer zur richtigen Zeit am richtigen Platz. Die Fotos sind absolut natürlich und zeigen genau die Emotionen, wie wir sie erlebt haben!</p>
+          </blockquote>
+          <div class="rating">★★★★★</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-image">
+          <img src="bilder/linzm2.jpg" alt="Eventagentur Graz" loading="lazy">
+          <div class="client-info">
+            <div class="client-name">Eventagentur Graz</div>
+            <div class="client-event">Firmen-Event</div>
+          </div>
+        </div>
+        <div class="testimonial-content">
+          <div class="quote-icon">“</div>
+          <blockquote>
+            <p>Professionelle Arbeit und eine Freude, mit ihm zusammenzuarbeiten. Sebastian versteht es, die Essenz jeder Veranstaltung einzufangen. Die Bilder waren innerhalb von 48h fertig - unschlagbar!</p>
+          </blockquote>
+          <div class="rating">★★★★★</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-image">
+          <img src="bilder/rr2.jpg" alt="Sportverein" loading="lazy">
+          <div class="client-info">
+            <div class="client-name">ASV Sportverein</div>
+            <div class="client-event">Kasberg Inferno</div>
+          </div>
+        </div>
+        <div class="testimonial-content">
+          <div class="quote-icon">“</div>
+          <blockquote>
+            <p>Die Action-Aufnahmen von unserem Rennen sind atemberaubend! Sebastian hat selbst bei Regen und schwierigen Lichtverhältnissen fantastische Bilder geliefert. Absolute Empfehlung für Sportevents!</p>
+          </blockquote>
+          <div class="rating">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Kontakt -->
+  <section id="contact" class="scroll-animation">
+    <h2>Kontakt</h2>
+    <p>Ich freue mich über deine Anfrage!</p>
+    <p>Email: <span class="contact-link" data-clipboard="sebastian.pillinger@gmx.at">sebastian.pillinger@gmx.at</span></p>
+    <p>Telefon: <span class="contact-link" data-clipboard="+43 677 62026186">+43 677 62026186</span></p>
+    <p>
+      <a href="https://instagram.com/vergrazt" target="_blank" class="contact-link">Instagram</a> | 
+      <a href="https://facebook.com/yourprofile" target="_blank" class="contact-link">Facebook</a> | 
+      <a href="https://twitter.com/yourprofile" target="_blank" class="contact-link">Twitter</a>
+    </p>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Sebastian Pillinger – Alle Rechte vorbehalten</p>
+    <p><a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a></p>
+  </footer>
+  
+  <script>
+    (function() {
+      'use strict';
+      
+      /* --- Scroll-Animation mit IntersectionObserver --- */
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+          }
+        });
+      }, { threshold: 0.33 });
+      document.querySelectorAll('.scroll-animation').forEach(el => observer.observe(el));
+      
+      /* --- Portfolio-Daten --- */
+      const portfolioData = [
+        {
+          src: "bilder/Hochzeit-001.jpg",
+          alt: "Hochzeiten",
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Hochzeit-${String(i+1).padStart(3,'0')}.jpg`)
+        },
+        {
+          src: "bilder/Event-001.jpg",
+          alt: "Events & Partys",
+          images: Array.from({ length: 30 }, (_, i) => `bilder/Event-${String(i+1).padStart(3,'0')}.jpg`)
+        },
+        {
+          src: "bilder/Sport-001.jpg",
+          alt: "Sportveranstaltungen",
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Sport-${String(i+1).padStart(3,'0')}.jpg`)
+        },
+        {
+          src: "bilder/Tiere-001.jpg",
+          alt: "Haustiere",
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Tiere-${String(i+1).padStart(3,'0')}.jpg`)
+        },
+        {
+          src: "bilder/Wildlife-001.jpg",
+          alt: "Wildlife",
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Wildlife-${String(i+1).padStart(3,'0')}.jpg`)
+        },
+        {
+          src: "bilder/Landschaften-001.jpg",
+          alt: "Landschaften",
+          images: Array.from({ length: 64 }, (_, i) => `bilder/Landschaften-${String(i+1).padStart(3,'0')}.jpg`)
+        }
+      ];
+      
+      /* --- DOM-Elemente abrufen --- */
+      const portfolioGallery = document.getElementById('portfolio-gallery');
+      const lightbox = document.getElementById('lightbox');
+      const sliderContainer = document.getElementById('slider-container');
+      const arrowLeft = document.querySelector('.lightbox-arrow.left');
+      const arrowRight = document.querySelector('.lightbox-arrow.right');
+      
+      /* --- Variablen zur Steuerung der Lightbox --- */
+      let currentIndex = 0;
+      let images = [];
+      let isAnimating = false;
+      let touchStartX = 0;
+      let currentPosition = 0;
+      
+      /* --- Portfolio initialisieren --- */
+      portfolioData.forEach(item => {
+        const container = document.createElement('div');
+        container.className = 'image-container';
+        container.innerHTML = `
+          <img src="${item.src}" alt="${item.alt}" loading="lazy">
+          <div class="overlay-text">${item.alt}</div>
+        `;
+        container.addEventListener('click', () => openLightbox(item.src, item.images));
+        portfolioGallery.appendChild(container);
+      });
+      
+      /* --- Lightbox-Funktionen --- */
+      function openLightbox(initialSrc, imageList) {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        images = imageList;
+        currentIndex = images.indexOf(initialSrc);
+        if (currentIndex === -1) currentIndex = 0;
+        currentPosition = -currentIndex * 100;
+        sliderContainer.innerHTML = '';
+        images.forEach(src => {
+          const slide = document.createElement('div');
+          slide.className = 'slider-item';
+          slide.innerHTML = `<img src="${src}" alt="Gallery Image">`;
+          sliderContainer.appendChild(slide);
+        });
+        sliderContainer.style.transition = 'none';
+        sliderContainer.style.transform = `translateX(${currentPosition}%)`;
+        lightbox.classList.add('active');
+        preloadNeighbors(currentIndex);
+      }
+      
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+      }
+      
+      function changeImage(n, animate = false) {
+        if (isAnimating) return;
+        currentIndex = (currentIndex + n + images.length) % images.length;
+        currentPosition = -currentIndex * 100;
+        if (animate) {
+          isAnimating = true;
+          sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
+        } else {
+          sliderContainer.style.transition = 'none';
+        }
+        sliderContainer.style.transform = `translateX(${currentPosition}%)`;
+        if (animate) {
+          sliderContainer.addEventListener('transitionend', () => {
+            isAnimating = false;
+            preloadNeighbors(currentIndex);
+          }, { once: true });
+        } else {
+          preloadNeighbors(currentIndex);
+        }
+      }
+      
+      function preloadNeighbors(index) {
+        const prevIndex = (index - 1 + images.length) % images.length;
+        const nextIndex = (index + 1) % images.length;
+        new Image().src = images[prevIndex];
+        new Image().src = images[nextIndex];
+      }
+      
+      /* --- Touch-Handling für Lightbox --- */
+      function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        sliderContainer.style.transition = 'none';
+      }
+      function handleTouchMove(e) {
+        e.preventDefault();
+        if (isAnimating) return;
+        const deltaX = e.touches[0].clientX - touchStartX;
+        const movePercentage = (deltaX / window.innerWidth) * 100;
+        sliderContainer.style.transform = `translateX(${currentPosition + movePercentage}%)`;
+      }
+      function handleTouchEnd(e) {
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(deltaX) > window.innerWidth * 0.15) {
+          changeImage(deltaX > 0 ? -1 : 1, true);
+        } else {
+          sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
+          sliderContainer.style.transform = `translateX(${currentPosition}%)`;
+        }
+      }
+      
+      /* --- Event-Listener --- */
+      lightbox.addEventListener('touchstart', handleTouchStart);
+      lightbox.addEventListener('touchmove', handleTouchMove);
+      lightbox.addEventListener('touchend', handleTouchEnd);
+      
+      // Schließen bei Klick auf den Hintergrund
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      
+      // Tastatur-Navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'ArrowLeft') changeImage(-1);
+        else if (e.key === 'ArrowRight') changeImage(1);
+        else if (e.key === 'Escape') closeLightbox();
+      });
+      
+      // Pfeil-Buttons
+      arrowLeft.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeImage(-1, true);
+      });
+      arrowRight.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeImage(1, true);
+      });
+      
+      /* --- Smooth Scrolling für interne Links --- */
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetEl = document.getElementById(this.getAttribute('href').substring(1));
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+      
+      /* --- Kopieren in die Zwischenablage --- */
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Kopiert: " + text);
+        }).catch(() => {
+          alert("Kopieren fehlgeschlagen. Bitte manuell kopieren: " + text);
+        });
+      }
+      document.querySelectorAll('[data-clipboard]').forEach(el => {
+        el.addEventListener('click', () => {
+          copyToClipboard(el.getAttribute('data-clipboard'));
+        });
+      });
+      
+      /* --- Touch-Event für Highlight-Bereich --- */
+      const highlightContainer = document.getElementById('highlight-container');
+      highlightContainer.addEventListener('touchstart', () => {
+        highlightContainer.classList.add('touch-active');
+      });
+      document.addEventListener('touchstart', (e) => {
+        if (!highlightContainer.contains(e.target)) {
+          highlightContainer.classList.remove('touch-active');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
