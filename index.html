@@ -1016,6 +1016,7 @@
           const direction = deltaX > 0 ? -1 : 1;
           changeImage(direction, false);
         } else {
+          // Hier wird im Lightbox-Bereich zurückgerastet
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
           sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         }
@@ -1106,7 +1107,7 @@
           indicatorsContainer.appendChild(dot);
         }
         
-        // Touch-Handling für den Slider, damit nur der Slider verschoben wird
+        // Touch-Handling für den Slider, damit der Slider live mitbewegt wird
         let sliderStartX = 0;
         let sliderStartY = 0;
         const servicesWrapper = document.querySelector('.services-slider-wrapper');
@@ -1114,33 +1115,38 @@
           sliderStartX = e.touches[0].clientX;
           sliderStartY = e.touches[0].clientY;
         });
+        // Hier wird während des Swipens der Slider live aktualisiert
         servicesWrapper.addEventListener('touchmove', (e) => {
           let deltaX = e.touches[0].clientX - sliderStartX;
           let deltaY = e.touches[0].clientY - sliderStartY;
           if(Math.abs(deltaX) > Math.abs(deltaY)) {
             e.preventDefault();
+            const movePercentage = (deltaX / window.innerWidth) * 100;
+            servicesContainer.style.transform = `translateX(-${servicesIndex * 100 - movePercentage}%)`;
           }
         });
         servicesWrapper.addEventListener('touchend', (e) => {
-		  const sliderEndX = e.changedTouches[0].clientX;
-		  const delta = sliderEndX - sliderStartX;
-
-		  // Falls Wischbewegung ausreichend war, Slide wechseln
-		  if (Math.abs(delta) > 50) {
-			if(delta < 0 && servicesIndex < totalSlides - 1) {
-			  servicesIndex++;
-			} else if(delta > 0 && servicesIndex > 0) {
-			  servicesIndex--;
-			}
-		  }
-		  
-		  // Egal ob gewechselt oder nicht, die Position immer neu setzen, damit "abgerastet" wird
-		  servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
-		  updateIndicators();
-		});
-
-        
-        // Klick-Events für die Pfeile wurden entfernt – stattdessen dienen hier die Punkt-Indikatoren zur Navigation.
+          const sliderEndX = e.changedTouches[0].clientX;
+          const delta = sliderEndX - sliderStartX;
+    
+          // Falls Wischbewegung ausreichend war, Slide wechseln
+          if (Math.abs(delta) > 50) {
+            if(delta < 0 && servicesIndex < totalSlides - 1) {
+              servicesIndex++;
+            } else if(delta > 0 && servicesIndex > 0) {
+              servicesIndex--;
+            }
+          }
+          
+          // Übergangsanimation hinzufügen und anschließend "einrasten"
+          servicesContainer.style.transition = 'transform 0.3s ease';
+          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+          updateIndicators();
+          // Transition nach Abschluss entfernen
+          setTimeout(() => {
+            servicesContainer.style.transition = 'none';
+          }, 300);
+        });
       }
     })();
   </script>
