@@ -77,7 +77,6 @@
       transition: color 0.3s ease;
     }
     nav a:hover { color: var(--accent1-color); }
-    /* Auf mobilen Geräten Navigation verkleinern */
     @media (max-width: 768px) {
       nav a { font-size: 1.2em; margin: 0 10px; }
     }
@@ -91,9 +90,13 @@
       position: relative;
       z-index: 1;
     }
-    /* Den #services-Bereich in Mobile vollständig nutzen */
+    /* Für Mobile Bereiche den Container auf volle Breite setzen */
     @media (max-width: 768px) {
-      #services { max-width: 100%; padding: 0; }
+      #services, 
+      #testimonials {
+        max-width: 100%;
+        padding: 0;
+      }
     }
     
     /* Hero Section */
@@ -140,7 +143,7 @@
       background: var(--background1-color);
       padding: 40px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
       gap: 40px;
     }
     .image-container {
@@ -159,18 +162,18 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%,-50%);
       color: white;
       font-size: 2em;
       opacity: 0;
       transition: opacity 0.9s ease;
       pointer-events: none;
     }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       .image-container img { filter: brightness(0.7); }
       .overlay-text { opacity: 1; }
     }
-    @media (min-width: 769px) {
+    @media (min-width:769px) {
       .image-container:hover .overlay-text { opacity: 1; }
     }
     
@@ -213,7 +216,6 @@
       transition: none !important;
       cursor: default;
     }
-    /* Pfeile in der Lightbox – Übergang sprunghaft */
     .lightbox-arrow {
       position: absolute;
       top: 50%;
@@ -229,10 +231,9 @@
     .lightbox-arrow:hover { opacity: 0.8; }
     .lightbox-arrow.left { left: 20px; }
     .lightbox-arrow.right { right: 20px; }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       .lightbox-arrow { font-size: 3em; padding: 5px 10px; }
     }
-    /* X-Schaltfläche zum Schließen (nur Desktop) */
     .lightbox-close {
       position: absolute;
       top: 20px;
@@ -243,7 +244,7 @@
       z-index: 1001;
       display: none;
     }
-    @media (min-width: 769px) {
+    @media (min-width:769px) {
       .lightbox-close { display: block; }
     }
     
@@ -274,7 +275,7 @@
     .highlight-content {
       position: absolute;
       top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%,-50%);
       text-align: center;
       width: 100%;
       padding: 20px;
@@ -320,10 +321,10 @@
       font-size: 1.4rem;
       text-align: justify;
     }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       .about-text { font-size: 1.2rem; }
     }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       .about-container {
         flex-direction: column;
         text-align: center;
@@ -353,23 +354,23 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
     
-    /* Leistungen – Desktop: Grid (3 nebeneinander); Mobile: Slider */
+    /* SERVICES SLIDER */
     .services-slider-wrapper {
       position: relative;
       width: 100%;
       overflow: hidden;
     }
-    @media (min-width: 769px) {
+    @media (min-width:769px) {
       .services-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3,1fr);
         gap: 30px;
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
       }
     }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       .services-container {
         display: flex;
         overflow: hidden;
@@ -400,6 +401,54 @@
       }
     }
     
+    /* TESTIMONIALS SLIDER (exakt gleiche Struktur wie Services) */
+    .testimonials-slider-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    @media (min-width:769px) {
+      .testimonials-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+      }
+    }
+    @media (max-width:768px) {
+      .testimonials-container {
+        display: flex;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+        flex-wrap: nowrap;
+        transition: transform 0.3s ease;
+        width: max-content;
+      }
+      .testimonial-card {
+        flex: 0 0 100vw;
+        scroll-snap-align: start;
+      }
+      .testimonials-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .testimonials-indicators .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+      }
+      .testimonials-indicators .indicator.active {
+        background: rgba(255,255,255,1);
+      }
+    }
+    
+    /* Service-Card Styles */
     .service-card {
       background: var(--background1-color);
       overflow: hidden;
@@ -494,55 +543,7 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
-    /* Kundenfeedback – Testimonials (analog zum Services-Slider) */
-    .testimonials-slider-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    @media (min-width: 769px) {
-      .testimonials-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 30px;
-        max-width: 1200px;
-        margin: auto;
-        padding: 20px;
-      }
-    }
-    @media (max-width: 768px) {
-      .testimonials-container {
-        display: flex;
-        overflow: hidden;
-        scroll-snap-type: x mandatory;
-        flex-wrap: nowrap;
-        transition: transform 0.3s ease;
-        width: max-content;
-      }
-      .testimonial-card {
-        flex: 0 0 100vw;
-        scroll-snap-align: start;
-      }
-      .testimonials-indicators {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
-      }
-      .testimonials-indicators .indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.5);
-        cursor: pointer;
-      }
-      .testimonials-indicators .indicator.active {
-        background: rgba(255,255,255,1);
-      }
-      .testimonial-image { height: 180px; }
-      blockquote { font-size: 1rem; }
-    }
-    
+    /* Testimonial-Card Styles */
     .testimonial-card {
       background: var(--background1-color);
       overflow: hidden;
@@ -627,7 +628,7 @@
       transition: color 0.3s ease;
     }
     .contact-link:hover { color: var(--accent2-color); }
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
       #contact p { font-size: 1.2em; }
       #contact p:last-child a { font-size: 1em; }
     }
@@ -725,7 +726,6 @@
   </section>
   
   <!-- Leistungen -->
-  <!-- Desktop: Grid (3 nebeneinander); Mobile: Slider mit Punkt-Indikatoren -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-slider-wrapper">
@@ -736,7 +736,7 @@
           </div>
           <div class="service-content">
             <h3>Hochzeitsfotografie</h3>
-            <p>Individuelle Begleitung Ihres besonderen Tages - von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
+            <p>Individuelle Begleitung Ihres besonderen Tages – von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
             <ul class="service-features">
               <li>✔ Vor-Ort-Termin & Planung</li>
               <li>✔ 8-12 Stunden Coverage</li>
@@ -785,7 +785,6 @@
           </div>
         </div>
       </div>
-      <!-- Indikatoren für den Services-Slider (nur in der mobilen Ansicht sichtbar) -->
       <div class="services-indicators"></div>
     </div>
   </section>
@@ -822,7 +821,7 @@
           <div class="testimonial-content">
             <div class="quote-icon">“</div>
             <blockquote>
-              <p>Professionelle Arbeit und eine Freude, mit ihm zusammenzuarbeiten. Sebastian versteht es, die Essenz jeder Veranstaltung einzufangen. Die Bilder waren innerhalb von 48h fertig - unschlagbar!</p>
+              <p>Professionelle Arbeit und eine Freude, mit ihm zusammenzuarbeiten. Sebastian versteht es, die Essenz jeder Veranstaltung einzufangen. Die Bilder waren innerhalb von 48h fertig – unschlagbar!</p>
             </blockquote>
             <div class="rating">★★★★★</div>
           </div>
@@ -844,7 +843,6 @@
           </div>
         </div>
       </div>
-      <!-- Indikatoren für den Testimonials-Slider -->
       <div class="testimonials-indicators"></div>
     </div>
   </section>
@@ -875,7 +873,7 @@
       // Scroll-Animation
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if(entry.isIntersecting) {
             entry.target.classList.add('animate');
           }
         });
@@ -949,7 +947,7 @@
         document.body.style.overflow = "hidden";
         images = imageList;
         currentIndex = images.indexOf(initialSrc);
-        if (currentIndex === -1) currentIndex = 0;
+        if(currentIndex === -1) currentIndex = 0;
         currentPosition = -currentIndex * 100;
         
         sliderContainer.innerHTML = '';
@@ -959,7 +957,7 @@
           slide.innerHTML = `<img src="${img}" alt="Gallery Image">`;
           sliderContainer.appendChild(slide);
         });
-    
+        
         sliderContainer.style.transition = 'none';
         sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         lightbox.classList.add("active");
@@ -975,18 +973,17 @@
       // Bildwechsel in der Lightbox (sprunghaft)
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
-        
         if(animate) {
           isAnimating = true;
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
         } else {
           sliderContainer.style.transition = 'none';
         }
-    
+        
         currentIndex = newIndex;
         currentPosition = -currentIndex * 100;
         sliderContainer.style.transform = `translateX(${currentPosition}%)`;
-    
+        
         if(animate) {
           sliderContainer.addEventListener('transitionend', () => {
             isAnimating = false;
@@ -998,4 +995,232 @@
       }
       
       function preloadNeighbors(index) {
-       
+        const prevIndex = (index - 1 + images.length) % images.length;
+        const nextIndex = (index + 1) % images.length;
+        new Image().src = images[prevIndex];
+        new Image().src = images[nextIndex];
+      }
+      
+      // Lightbox: Touch-Handling inklusive vertikales Schließen
+      function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        sliderContainer.style.transition = 'none';
+      }
+      
+      function handleTouchMove(e) {
+        e.preventDefault();
+        if(isAnimating) return;
+        
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+        
+        if(Math.abs(deltaY) > Math.abs(deltaX)) {
+          sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
+          return;
+        }
+        
+        const movePercentage = (deltaX / window.innerWidth) * 100;
+        let newPosition = currentPosition + movePercentage;
+        sliderContainer.style.transform = `translateX(${newPosition}%)`;
+      }
+      
+      function handleTouchEnd(e) {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const deltaX = endX - touchStartX;
+        const deltaY = endY - touchStartY;
+        
+        if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
+          closeLightbox();
+          return;
+        }
+        
+        if(Math.abs(deltaX) > window.innerWidth * 0.15) {
+          const direction = deltaX > 0 ? -1 : 1;
+          changeImage(direction, false);
+        } else {
+          sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
+          sliderContainer.style.transform = `translateX(${currentPosition}%)`;
+        }
+      }
+      
+      lightbox.addEventListener('touchstart', handleTouchStart);
+      lightbox.addEventListener('touchmove', handleTouchMove);
+      lightbox.addEventListener('touchend', handleTouchEnd);
+      
+      lightbox.addEventListener('click', (e) => {
+        if(e.target === lightbox) closeLightbox();
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if(!lightbox.classList.contains('active')) return;
+        if(e.key === 'ArrowLeft') changeImage(-1, false);
+        else if(e.key === 'ArrowRight') changeImage(1, false);
+        else if(e.key === 'Escape') closeLightbox();
+      });
+      
+      arrowLeft.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeImage(-1, false);
+      });
+      arrowRight.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeImage(1, false);
+      });
+      
+      if(closeButton) {
+        closeButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeLightbox();
+        });
+      }
+      
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetEl = document.getElementById(this.getAttribute('href').substring(1));
+          if(targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+      
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Kopiert: " + text);
+        }).catch(() => {
+          alert("Kopieren fehlgeschlagen. Bitte manuell kopieren: " + text);
+        });
+      }
+      document.querySelectorAll('[data-clipboard]').forEach(el => {
+        el.addEventListener('click', () => {
+          copyToClipboard(el.getAttribute('data-clipboard'));
+        });
+      });
+      
+      /* --- Slider für den SERVICES-Bereich auf mobilen Geräten --- */
+      if(window.innerWidth <= 768) {
+        let servicesIndex = 0;
+        const servicesContainer = document.querySelector('.services-container');
+        const totalServices = document.querySelectorAll('.service-card').length;
+        const servicesIndicators = document.querySelector('.services-indicators');
+        
+        function updateServicesIndicators() {
+          const dots = servicesIndicators.querySelectorAll('.indicator');
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === servicesIndex);
+          });
+        }
+        
+        for(let i = 0; i < totalServices; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'indicator';
+          if(i === 0) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            servicesIndex = i;
+            servicesContainer.style.transition = 'transform 0.3s ease';
+            servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
+            updateServicesIndicators();
+            setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
+          });
+          servicesIndicators.appendChild(dot);
+        }
+        
+        let sliderStartX = 0, sliderStartY = 0;
+        const servicesWrapper = document.querySelector('.services-slider-wrapper');
+        servicesWrapper.addEventListener('touchstart', (e) => {
+          sliderStartX = e.touches[0].clientX;
+          sliderStartY = e.touches[0].clientY;
+        });
+        servicesWrapper.addEventListener('touchmove', (e) => {
+          let deltaX = e.touches[0].clientX - sliderStartX;
+          let deltaY = e.touches[0].clientY - sliderStartY;
+          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+            e.preventDefault();
+            const movePercentage = (deltaX / window.innerWidth) * 100;
+            servicesContainer.style.transform = `translateX(-${servicesIndex * 100 - movePercentage}vw)`;
+          }
+        });
+        servicesWrapper.addEventListener('touchend', (e) => {
+          const sliderEndX = e.changedTouches[0].clientX;
+          const delta = sliderEndX - sliderStartX;
+          if(Math.abs(delta) > 50) {
+            if(delta < 0 && servicesIndex < totalServices - 1) {
+              servicesIndex++;
+            } else if(delta > 0 && servicesIndex > 0) {
+              servicesIndex--;
+            }
+          }
+          servicesContainer.style.transition = 'transform 0.3s ease';
+          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
+          updateServicesIndicators();
+          setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
+        });
+      }
+      
+      /* --- Slider für den TESTIMONIALS-Bereich – exakt wie bei Services --- */
+      if(window.innerWidth <= 768) {
+        let testimonialIndex = 0;
+        const testimonialsContainer = document.querySelector('.testimonials-container');
+        const totalTestimonials = document.querySelectorAll('.testimonial-card').length;
+        const testimonialsIndicators = document.querySelector('.testimonials-indicators');
+        
+        function updateTestimonialIndicators() {
+          const dots = testimonialsIndicators.querySelectorAll('.indicator');
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === testimonialIndex);
+          });
+        }
+        
+        for(let i = 0; i < totalTestimonials; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'indicator';
+          if(i === 0) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            testimonialIndex = i;
+            testimonialsContainer.style.transition = 'transform 0.3s ease';
+            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
+            updateTestimonialIndicators();
+            setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
+          });
+          testimonialsIndicators.appendChild(dot);
+        }
+        
+        let testimonialStartX = 0, testimonialStartY = 0;
+        testimonialsContainer.addEventListener('touchstart', (e) => {
+          testimonialStartX = e.touches[0].clientX;
+          testimonialStartY = e.touches[0].clientY;
+        });
+        testimonialsContainer.addEventListener('touchmove', (e) => {
+          let deltaX = e.touches[0].clientX - testimonialStartX;
+          let deltaY = e.touches[0].clientY - testimonialStartY;
+          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+            e.preventDefault();
+            const movePercentage = (deltaX / window.innerWidth) * 100;
+            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100 - movePercentage}vw)`;
+          }
+        });
+        testimonialsContainer.addEventListener('touchend', (e) => {
+          const testimonialEndX = e.changedTouches[0].clientX;
+          const delta = testimonialEndX - testimonialStartX;
+          if(Math.abs(delta) > 50) {
+            if(delta < 0 && testimonialIndex < totalTestimonials - 1) {
+              testimonialIndex++;
+            } else if(delta > 0 && testimonialIndex > 0) {
+              testimonialIndex--;
+            }
+          }
+          testimonialsContainer.style.transition = 'transform 0.3s ease';
+          testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
+          updateTestimonialIndicators();
+          setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
+        });
+      }
+      
+    })();
+  </script>
+</body>
+</html>
