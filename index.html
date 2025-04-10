@@ -76,7 +76,11 @@
       font-size: 1.6em;
       transition: color 0.3s ease;
     }
-    nav a:hover { color: var(--accent1-color); }
+    
+    /* Über mobiles Menü: kleinere Schriftgröße */
+    @media (max-width: 768px) {
+      nav a { font-size: 1.2em; margin: 0 10px; }
+    }
     
     /* Sections */
     section {
@@ -205,7 +209,7 @@
       transition: none !important;
       cursor: default;
     }
-    /* Pfeile in der Lightbox – Übergang sprunghaft bei Klick */
+    /* Pfeile in der Lightbox – Übergang sprunghaft */
     .lightbox-arrow {
       position: absolute;
       top: 50%;
@@ -312,6 +316,10 @@
       font-size: 1.4em;
       text-align: justify;
     }
+    /* Text im Über-mich-Bereich etwas kleiner auf mobilen Geräten */
+    @media (max-width: 768px) {
+      .about-text { font-size: 1.2em; }
+    }
     .about-image img {
       width: 300px;
       height: 200px;
@@ -339,6 +347,7 @@
     /* Leistungen – Standard: Grid mit maximal 3 nebeneinander */
     .services-slider-wrapper {
       position: relative;
+      overflow: hidden; /* Hiermit wird verhindert, dass der Slider die ganze Seite verschiebt */
     }
     .services-container {
       display: grid;
@@ -349,7 +358,8 @@
       padding: 20px;
       transition: transform 0.3s ease;
     }
-    /* Mobile: Slider-Ansicht, jeweils 1 Karte */
+    
+    /* Mobile: Slider-Ansicht, jeweils 1 Karte, mit Swipe-Steuerung */
     @media (max-width: 768px) {
       .services-container {
         display: flex;
@@ -670,7 +680,9 @@
   </section>
   
   <!-- Leistungen -->
-  <!-- Für mobile Ansicht wird hier ein Slider genutzt, für Desktop ein Grid (max. 3 nebeneinander) -->
+  <!-- Hier wird der Bereich immer angezeigt.
+       Auf Desktop erscheint ein Grid (maximal 3 nebeneinander).
+       Auf mobilen Geräten wird ein Slider realisiert, der per Touch und über Schaltflächen gesteuert werden kann. -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-slider-wrapper">
@@ -730,7 +742,7 @@
           </div>
         </div>
       </div>
-      <!-- Slider Controls – nur auf mobilen Geräten sichtbar -->
+      <!-- Slider Controls – erscheinen nur auf mobilen Geräten -->
       <div class="services-slider-controls">
         <button id="services-prev" aria-label="Vorherige Leistung">&#10094;</button>
         <button id="services-next" aria-label="Nächste Leistung">&#10095;</button>
@@ -888,7 +900,7 @@
         portfolioGallery.appendChild(container);
       });
       
-      /* --- Lightbox-Funktionen (wie original) --- */
+      /* --- Lightbox-Funktionen (wie im Original) --- */
       function openLightbox(initialSrc, imageList) {
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
@@ -917,9 +929,10 @@
         document.body.style.overflow = "auto";
       }
       
-      // Bei Klick auf Pfeile soll der Übergang sprunghaft (ohne Animation) erfolgen
+      // Beim Klick auf Pfeile oder Tastatur sollen die Übergänge sprunghaft erfolgen (ohne weiche Transition)
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
+        
         if(animate) {
           isAnimating = true;
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
@@ -948,7 +961,7 @@
         new Image().src = images[nextIndex];
       }
       
-      /* --- Touch-Handling für Lightbox (wie original) --- */
+      /* --- Touch-Handling für Lightbox (wie im Original) --- */
       function handleTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -988,7 +1001,7 @@
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
         
-        // Vertikales Wischen (Schließen bei ausreichend vertikalem Swipe)
+        // Vertikales Wischen (Schließen, wenn ausreichend vertikal gewischt wurde)
         if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
@@ -1022,7 +1035,7 @@
         else if(e.key === 'Escape') closeLightbox();
       });
       
-      // Pfeil-Buttons – nun sprunghaft (ohne Animation)
+      // Pfeil-Buttons – sprunghafter Übergang
       arrowLeft.addEventListener('click', (e) => {
         e.stopPropagation();
         changeImage(-1, false);
@@ -1066,14 +1079,31 @@
       });
       
       /* --- Slider für den Leistungen-Bereich auf mobilen Geräten --- */
-      // Nur auf mobilen Ansichten aktivieren
       if(window.innerWidth <= 768) {
         let servicesIndex = 0;
         const servicesContainer = document.querySelector('.services-container');
-        const serviceCards = document.querySelectorAll('.service-card');
-        const totalSlides = serviceCards.length;
+        const totalSlides = document.querySelectorAll('.service-card').length;
+        const servicesWrapper = document.querySelector('.services-slider-wrapper');
         
-        // Event-Listener für die Slider-Steuerung
+        // Touch-Handling für den Services-Slider, damit nicht die ganze Seite verschoben wird
+        let sliderStartX = 0;
+        servicesWrapper.addEventListener('touchstart', (e) => {
+          sliderStartX = e.touches[0].clientX;
+        });
+        servicesWrapper.addEventListener('touchend', (e) => {
+          const sliderEndX = e.changedTouches[0].clientX;
+          const delta = sliderEndX - sliderStartX;
+          if (Math.abs(delta) > 50) {
+            if(delta < 0 && servicesIndex < totalSlides - 1) {
+              servicesIndex++;
+            } else if(delta > 0 && servicesIndex > 0) {
+              servicesIndex--;
+            }
+            servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
+          }
+        });
+        
+        // Auch Klick-Events für die Schaltflächen sind aktiv
         document.getElementById('services-prev').addEventListener('click', () => {
           servicesIndex = Math.max(servicesIndex - 1, 0);
           servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
