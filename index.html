@@ -374,7 +374,7 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        /* Wichtig: Container soll so breit sein wie alle Service-Karten zusammen */
+        /* Container breit genug, um alle Service-Karten aufzunehmen */
         width: max-content;
       }
       .service-card {
@@ -502,6 +502,26 @@
       margin: 0 auto;
       padding: 20px;
     }
+    /* Mobile: In der Testimonials-Sektion als Slider anzeigen */
+    @media (max-width: 768px) {
+      .testimonials-container {
+        display: flex;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+        flex-wrap: nowrap;
+        transition: transform 0.3s ease;
+        /* Container passt sich der Gesamtheit der Testimonials an */
+        width: max-content;
+      }
+      .testimonial-card {
+        flex: 0 0 100vw;
+        scroll-snap-align: start;
+      }
+      /* Optional: passe Schriftgrößen oder Bildhöhen an */
+      .testimonial-image { height: 180px; }
+      blockquote { font-size: 1rem; }
+    }
+    
     .testimonial-card {
       background: var(--background1-color);
       overflow: hidden;
@@ -567,11 +587,6 @@
       font-size: 1.3rem;
       margin-top: 20px;
       letter-spacing: 3px;
-    }
-    @media (max-width: 768px) {
-      .testimonials-container { grid-template-columns: 1fr; }
-      .testimonial-image { height: 180px; }
-      blockquote { font-size: 1rem; }
     }
     
     /* Kontakt */
@@ -754,7 +769,7 @@
     </div>
   </section>
   
-  <!-- Kundenfeedback -->
+  <!-- Kundenfeedback (Testimonials) -->
   <section id="testimonials" class="scroll-animation">
     <h2>Was Kunden sagen</h2>
     <div class="testimonials-container">
@@ -876,7 +891,7 @@
         }
       ];
       
-      // DOM-Elemente
+      // DOM-Elemente für Portfolio und Lightbox
       const portfolioGallery = document.getElementById('portfolio-gallery');
       const lightbox = document.getElementById('lightbox');
       const sliderContainer = document.getElementById('slider-container');
@@ -980,18 +995,15 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
-        // Bei stark vertikalem Swipe: Bild leicht mitbewegen (dampened)
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
           const dampenedDelta = deltaY * 0.3;
           sliderContainer.style.transform = `translateY(${dampenedDelta}px)`;
           return;
         }
     
-        // Horizontales Wischen
         const movePercentage = (deltaX / window.innerWidth) * 100;
         let newPosition = currentPosition + movePercentage;
         
-        // Endlos-Loop Logik
         if(currentIndex === 0 && newPosition > 0) newPosition = -images.length * 100 + movePercentage;
         if(currentIndex === images.length-1 && newPosition < -currentIndex * 100) newPosition = 100 + movePercentage;
         
@@ -1015,7 +1027,6 @@
       lightbox.addEventListener('touchmove', handleTouchMove);
       lightbox.addEventListener('touchend', handleTouchEnd);
       
-      // Schließen bei Klick auf Hintergrund
       lightbox.addEventListener('click', (e) => {
         if(e.target === lightbox) closeLightbox();
       });
@@ -1073,7 +1084,6 @@
         const totalSlides = document.querySelectorAll('.service-card').length;
         const indicatorsContainer = document.querySelector('.services-indicators');
         
-        // Funktion, um die aktiven Indikatoren zu aktualisieren
         function updateIndicators() {
           const dots = indicatorsContainer.querySelectorAll('.indicator');
           dots.forEach((dot, index) => {
@@ -1081,7 +1091,6 @@
           });
         }
         
-        // Indikatoren erstellen
         for (let i = 0; i < totalSlides; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
@@ -1096,7 +1105,6 @@
           indicatorsContainer.appendChild(dot);
         }
         
-        // Touch-Handling für den Slider, damit der Slider live mitbewegt wird
         let sliderStartX = 0;
         let sliderStartY = 0;
         const servicesWrapper = document.querySelector('.services-slider-wrapper');
@@ -1130,6 +1138,47 @@
           updateIndicators();
           setTimeout(() => {
             servicesContainer.style.transition = 'none';
+          }, 300);
+        });
+      }
+      
+      /* --- Slider für Kundenfeedback (Testimonials) in der mobilen Ansicht --- */
+      if(window.innerWidth <= 768) {
+        let testimonialIndex = 0;
+        const testimonialsContainer = document.querySelector('.testimonials-container');
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        const totalTestimonials = testimonialCards.length;
+        let testimonialStartX = 0, testimonialStartY = 0;
+        
+        testimonialsContainer.addEventListener('touchstart', (e) => {
+          testimonialStartX = e.touches[0].clientX;
+          testimonialStartY = e.touches[0].clientY;
+        });
+        
+        testimonialsContainer.addEventListener('touchmove', (e) => {
+          let deltaX = e.touches[0].clientX - testimonialStartX;
+          let deltaY = e.touches[0].clientY - testimonialStartY;
+          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+            e.preventDefault();
+            const movePercentage = (deltaX / window.innerWidth) * 100;
+            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100 - movePercentage}vw)`;
+          }
+        });
+        
+        testimonialsContainer.addEventListener('touchend', (e) => {
+          const testimonialEndX = e.changedTouches[0].clientX;
+          const delta = testimonialEndX - testimonialStartX;
+          if (Math.abs(delta) > 50) {
+            if(delta < 0 && testimonialIndex < totalTestimonials - 1) {
+              testimonialIndex++;
+            } else if(delta > 0 && testimonialIndex > 0) {
+              testimonialIndex--;
+            }
+          }
+          testimonialsContainer.style.transition = 'transform 0.3s ease';
+          testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
+          setTimeout(() => {
+            testimonialsContainer.style.transition = 'none';
           }, 300);
         });
       }
