@@ -91,7 +91,7 @@
       position: relative;
       z-index: 1;
     }
-    /* Überschreibe den Container im #services-Bereich für Mobile */
+    /* Für den Service-Bereich in Mobile den Container anpassen */
     @media (max-width: 768px) {
       #services {
         max-width: 100%;
@@ -182,8 +182,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       background: rgba(0,0,0,0.95);
       justify-content: center;
       align-items: center;
@@ -507,7 +506,7 @@
       margin: auto;
       padding: 20px;
     }
-    /* Mobile: Slider-Ansicht für Testimonials */
+    /* Mobile: Slider-Ansicht für Testimonials – analog zum Services-Slider */
     @media (max-width: 768px) {
       .testimonials-container {
         display: flex;
@@ -515,7 +514,7 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        width: 100vw;
+        width: max-content;
       }
       .testimonial-card {
         flex: 0 0 100vw;
@@ -791,58 +790,60 @@
   <!-- Kundenfeedback (Testimonials) -->
   <section id="testimonials" class="scroll-animation">
     <h2>Was Kunden sagen</h2>
-    <div class="testimonials-container">
-      <div class="testimonial-card">
-        <div class="testimonial-image">
-          <img src="bilder/Hochzeit-052.jpg" alt="Anna und Markus" loading="lazy">
-          <div class="client-info">
-            <div class="client-name">Anna & Markus</div>
-            <div class="client-event">Hochzeit in Graz</div>
+    <div class="testimonials-slider-wrapper">
+      <div class="testimonials-container">
+        <div class="testimonial-card">
+          <div class="testimonial-image">
+            <img src="bilder/Hochzeit-052.jpg" alt="Anna und Markus" loading="lazy">
+            <div class="client-info">
+              <div class="client-name">Anna & Markus</div>
+              <div class="client-event">Hochzeit in Graz</div>
+            </div>
+          </div>
+          <div class="testimonial-content">
+            <div class="quote-icon">“</div>
+            <blockquote>
+              <p>Sebastian hat unsere Hochzeit perfekt festgehalten. Er war unauffällig, aber immer zur richtigen Zeit am richtigen Platz. Die Fotos sind absolut natürlich und zeigen genau die Emotionen, wie wir sie erlebt haben!</p>
+            </blockquote>
+            <div class="rating">★★★★★</div>
           </div>
         </div>
-        <div class="testimonial-content">
-          <div class="quote-icon">“</div>
-          <blockquote>
-            <p>Sebastian hat unsere Hochzeit perfekt festgehalten. Er war unauffällig, aber immer zur richtigen Zeit am richtigen Platz. Die Fotos sind absolut natürlich und zeigen genau die Emotionen, wie wir sie erlebt haben!</p>
-          </blockquote>
-          <div class="rating">★★★★★</div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-image">
-          <img src="bilder/Sport-012.jpg" alt="Eventagentur Graz" loading="lazy">
-          <div class="client-info">
-            <div class="client-name">Eventagentur Graz</div>
-            <div class="client-event">Firmen-Event</div>
+        <div class="testimonial-card">
+          <div class="testimonial-image">
+            <img src="bilder/Sport-012.jpg" alt="Eventagentur Graz" loading="lazy">
+            <div class="client-info">
+              <div class="client-name">Eventagentur Graz</div>
+              <div class="client-event">Firmen-Event</div>
+            </div>
+          </div>
+          <div class="testimonial-content">
+            <div class="quote-icon">“</div>
+            <blockquote>
+              <p>Professionelle Arbeit und eine Freude, mit ihm zusammenzuarbeiten. Sebastian versteht es, die Essenz jeder Veranstaltung einzufangen. Die Bilder waren innerhalb von 48h fertig - unschlagbar!</p>
+            </blockquote>
+            <div class="rating">★★★★★</div>
           </div>
         </div>
-        <div class="testimonial-content">
-          <div class="quote-icon">“</div>
-          <blockquote>
-            <p>Professionelle Arbeit und eine Freude, mit ihm zusammenzuarbeiten. Sebastian versteht es, die Essenz jeder Veranstaltung einzufangen. Die Bilder waren innerhalb von 48h fertig - unschlagbar!</p>
-          </blockquote>
-          <div class="rating">★★★★★</div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-image">
-          <img src="bilder/Sport-009.jpg" alt="Sportverein" loading="lazy">
-          <div class="client-info">
-            <div class="client-name">ASV Sportverein</div>
-            <div class="client-event">Kasberg Inferno</div>
+        <div class="testimonial-card">
+          <div class="testimonial-image">
+            <img src="bilder/Sport-009.jpg" alt="Sportverein" loading="lazy">
+            <div class="client-info">
+              <div class="client-name">ASV Sportverein</div>
+              <div class="client-event">Kasberg Inferno</div>
+            </div>
+          </div>
+          <div class="testimonial-content">
+            <div class="quote-icon">“</div>
+            <blockquote>
+              <p>Die Action-Aufnahmen von unserem Rennen sind atemberaubend! Sebastian hat selbst bei Regen und schwierigen Lichtverhältnissen fantastische Bilder geliefert. Absolute Empfehlung für Sportevents!</p>
+            </blockquote>
+            <div class="rating">★★★★★</div>
           </div>
         </div>
-        <div class="testimonial-content">
-          <div class="quote-icon">“</div>
-          <blockquote>
-            <p>Die Action-Aufnahmen von unserem Rennen sind atemberaubend! Sebastian hat selbst bei Regen und schwierigen Lichtverhältnissen fantastische Bilder geliefert. Absolute Empfehlung für Sportevents!</p>
-          </blockquote>
-          <div class="rating">★★★★★</div>
-        </div>
       </div>
+      <!-- Indikatoren für den Testimonials-Slider -->
+      <div class="testimonials-indicators"></div>
     </div>
-    <!-- Indikatoren für den Testimonials-Slider -->
-    <div class="testimonials-indicators"></div>
   </section>
   
   <!-- Kontakt -->
@@ -1016,7 +1017,7 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
-        // Wenn vertikaler Swipe signifikant, das Bild vertikal mitbewegen
+        // Bei vertikalem Swipe: Bild mitbewegen
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
           sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
           return;
@@ -1167,8 +1168,7 @@
       if(window.innerWidth <= 768) {
         let testimonialIndex = 0;
         const testimonialsContainer = document.querySelector('.testimonials-container');
-        const testimonialCards = document.querySelectorAll('.testimonial-card');
-        const totalTestimonials = testimonialCards.length;
+        const totalTestimonials = document.querySelectorAll('.testimonial-card').length;
         const testimonialsIndicators = document.querySelector('.testimonials-indicators');
         
         function updateTestimonialIndicators() {
@@ -1178,7 +1178,6 @@
           });
         }
         
-        // Erzeuge die Punkt-Indikatoren für Testimonials
         for (let i = 0; i < totalTestimonials; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
@@ -1223,7 +1222,6 @@
           setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
         });
       }
-      
     })();
   </script>
 </body>
