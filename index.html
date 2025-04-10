@@ -64,7 +64,7 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(44, 44, 44, 0.9);
+      background: rgba(44,44,44,0.9);
       padding: 15px 0;
       text-align: center;
       z-index: 1000;
@@ -91,9 +91,12 @@
       position: relative;
       z-index: 1;
     }
-    /* Für Testimonials in der mobilen Ansicht: volle Breite */
+    /* Überschreibe den Container im #services-Bereich für Mobile */
     @media (max-width: 768px) {
-      #testimonials { max-width: 100%; padding: 0; }
+      #services {
+        max-width: 100%;
+        padding: 0;
+      }
     }
     
     /* Hero Section */
@@ -119,14 +122,14 @@
       text-shadow: 0 5px 15px rgba(0,0,0,0.3);
       margin-bottom: 2rem;
     }
-    .first-name { font-size: clamp(3rem, 12vw, 6rem); color: var(--light); display: block; }
-    .last-name { font-size: clamp(2.5rem, 10vw, 4.5rem); color: var(--accent1-color); display: block; margin-top: -0.5rem; }
+    .first-name { font-size: clamp(3rem,12vw,6rem); color: var(--light); display: block; }
+    .last-name { font-size: clamp(2.5rem,10vw,4.5rem); color: var(--accent1-color); display: block; margin-top: -0.5rem; }
     .name-subtitle {
       font-family: 'Roboto', sans-serif;
       font-weight: 300;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      font-size: clamp(0.8rem, 2vw, 1.2rem);
+      font-size: clamp(0.8rem,2vw,1.2rem);
       margin: 1rem 0;
     }
     h2 {
@@ -179,7 +182,8 @@
       display: none;
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       background: rgba(0,0,0,0.95);
       justify-content: center;
       align-items: center;
@@ -282,7 +286,7 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
     .highlight-content h3 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-size: clamp(2rem,4vw,3.5rem);
       margin: 0;
       line-height: 1.1;
       opacity: 0;
@@ -317,11 +321,11 @@
     }
     .about-text {
       max-width: 600px;
-      font-size: 1.4em;
+      font-size: 1.4rem;
       text-align: justify;
     }
     @media (max-width: 768px) {
-      .about-text { font-size: 1.2em; }
+      .about-text { font-size: 1.2rem; }
     }
     @media (max-width: 768px) {
       .about-container {
@@ -342,7 +346,7 @@
       display: inline-block;
       margin-top: 20px;
       padding: 15px 30px;
-      font-size: 1.2em;
+      font-size: 1.2rem;
       background-color: var(--accent1-color);
       text-decoration: none;
       transition: background-color 0.3s ease, transform 0.3s ease;
@@ -511,7 +515,6 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        /* Für volle Bildschirmbreite */
         width: 100vw;
       }
       .testimonial-card {
@@ -1013,7 +1016,7 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
-        // Wenn vertikaler Swipe signifikant ist, den Finger dem Bild folgen lassen
+        // Wenn vertikaler Swipe signifikant, das Bild vertikal mitbewegen
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
           sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
           return;
@@ -1030,7 +1033,7 @@
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
         
-        // Vertikaler Swipe: Schließen, wenn ausreichend stark und > horizontaler Swipe
+        // Bei vertikalem Swipe, wenn ausreichend stark, Lightbox schließen
         if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
@@ -1220,6 +1223,7 @@
           setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
         });
       }
+      
     })();
   </script>
 </body>
