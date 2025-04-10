@@ -91,6 +91,10 @@
       position: relative;
       z-index: 1;
     }
+    /* Für Testimonials in der mobilen Ansicht: volle Breite */
+    @media (max-width: 768px) {
+      #testimonials { max-width: 100%; padding: 0; }
+    }
     
     /* Hero Section */
     .hero {
@@ -316,11 +320,9 @@
       font-size: 1.4em;
       text-align: justify;
     }
-    /* Schrift im Über-mich-Bereich für mobile Geräte etwas verkleinern */
     @media (max-width: 768px) {
       .about-text { font-size: 1.2em; }
     }
-    /* Portrait unterhalb des Textes auf mobilen Geräten */
     @media (max-width: 768px) {
       .about-container {
         flex-direction: column;
@@ -498,7 +500,7 @@
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 30px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: auto;
       padding: 20px;
     }
     /* Mobile: Slider-Ansicht für Testimonials */
@@ -509,7 +511,8 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        width: max-content;
+        /* Für volle Bildschirmbreite */
+        width: 100vw;
       }
       .testimonial-card {
         flex: 0 0 100vw;
@@ -994,7 +997,7 @@
         new Image().src = images[nextIndex];
       }
       
-      // Touch-Handling für Lightbox
+      // Lightbox: Touch-Handling inklusive vertikales Schließen
       function handleTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
@@ -1010,25 +1013,30 @@
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
     
+        // Wenn vertikaler Swipe signifikant ist, den Finger dem Bild folgen lassen
         if(Math.abs(deltaY) > Math.abs(deltaX)) {
-          const dampenedDelta = deltaY * 0.3;
-          sliderContainer.style.transform = `translateY(${dampenedDelta}px)`;
+          sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
           return;
         }
     
         const movePercentage = (deltaX / window.innerWidth) * 100;
         let newPosition = currentPosition + movePercentage;
-        
-        if(currentIndex === 0 && newPosition > 0) newPosition = -images.length * 100 + movePercentage;
-        if(currentIndex === images.length-1 && newPosition < -currentIndex * 100) newPosition = 100 + movePercentage;
-        
         sliderContainer.style.transform = `translateX(${newPosition}%)`;
       }
       
       function handleTouchEnd(e) {
         const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
         const deltaX = endX - touchStartX;
+        const deltaY = endY - touchStartY;
         
+        // Vertikaler Swipe: Schließen, wenn ausreichend stark und > horizontaler Swipe
+        if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
+          closeLightbox();
+          return;
+        }
+        
+        // Horizontaler Swipe: Bildwechsel
         if(Math.abs(deltaX) > window.innerWidth * 0.15) {
           const direction = deltaX > 0 ? -1 : 1;
           changeImage(direction, false);
@@ -1148,9 +1156,7 @@
           servicesContainer.style.transition = 'transform 0.3s ease';
           servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
           updateServicesIndicators();
-          setTimeout(() => {
-            servicesContainer.style.transition = 'none';
-          }, 300);
+          setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
         });
       }
       
@@ -1169,7 +1175,7 @@
           });
         }
         
-        // Erzeuge die Punkt-Indikatoren
+        // Erzeuge die Punkt-Indikatoren für Testimonials
         for (let i = 0; i < totalTestimonials; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
@@ -1211,9 +1217,7 @@
           testimonialsContainer.style.transition = 'transform 0.3s ease';
           testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
           updateTestimonialIndicators();
-          setTimeout(() => {
-            testimonialsContainer.style.transition = 'none';
-          }, 300);
+          setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
         });
       }
     })();
