@@ -374,7 +374,6 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        /* Container breit genug, um alle Service-Karten aufzunehmen */
         width: max-content;
       }
       .service-card {
@@ -493,7 +492,7 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
-    /* Kundenfeedback */
+    /* Kundenfeedback – Testimonials */
     .testimonials-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -502,7 +501,7 @@
       margin: 0 auto;
       padding: 20px;
     }
-    /* Mobile: In der Testimonials-Sektion als Slider anzeigen */
+    /* Mobile: Slider-Ansicht für Testimonials */
     @media (max-width: 768px) {
       .testimonials-container {
         display: flex;
@@ -510,14 +509,28 @@
         scroll-snap-type: x mandatory;
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
-        /* Container passt sich der Gesamtheit der Testimonials an */
         width: max-content;
       }
       .testimonial-card {
         flex: 0 0 100vw;
         scroll-snap-align: start;
       }
-      /* Optional: passe Schriftgrößen oder Bildhöhen an */
+      .testimonials-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .testimonials-indicators .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+      }
+      .testimonials-indicators .indicator.active {
+        background: rgba(255,255,255,1);
+      }
       .testimonial-image { height: 180px; }
       blockquote { font-size: 1rem; }
     }
@@ -764,7 +777,7 @@
           </div>
         </div>
       </div>
-      <!-- Indikatoren (nur in der mobilen Ansicht sichtbar) -->
+      <!-- Indikatoren für den Services-Slider (nur in der mobilen Ansicht sichtbar) -->
       <div class="services-indicators"></div>
     </div>
   </section>
@@ -822,6 +835,8 @@
         </div>
       </div>
     </div>
+    <!-- Indikatoren für den Testimonials-Slider -->
+    <div class="testimonials-indicators"></div>
   </section>
   
   <!-- Kontakt -->
@@ -1077,36 +1092,35 @@
         });
       });
       
-      /* --- Slider für den Leistungen-Bereich auf mobilen Geräten mit Punkt-Indikatoren --- */
+      /* --- Slider für den Leistungen-Bereich (Services) auf mobilen Geräten --- */
       if(window.innerWidth <= 768) {
         let servicesIndex = 0;
         const servicesContainer = document.querySelector('.services-container');
-        const totalSlides = document.querySelectorAll('.service-card').length;
-        const indicatorsContainer = document.querySelector('.services-indicators');
+        const totalServices = document.querySelectorAll('.service-card').length;
+        const servicesIndicators = document.querySelector('.services-indicators');
         
-        function updateIndicators() {
-          const dots = indicatorsContainer.querySelectorAll('.indicator');
-          dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === servicesIndex);
+        function updateServicesIndicators() {
+          const dots = servicesIndicators.querySelectorAll('.indicator');
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === servicesIndex);
           });
         }
         
-        for (let i = 0; i < totalSlides; i++) {
+        for (let i = 0; i < totalServices; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
-          if(i === 0) {
-            dot.classList.add('active');
-          }
+          if(i === 0) { dot.classList.add('active'); }
           dot.addEventListener('click', () => {
             servicesIndex = i;
+            servicesContainer.style.transition = 'transform 0.3s ease';
             servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
-            updateIndicators();
+            updateServicesIndicators();
+            setTimeout(() => { servicesContainer.style.transition = 'none'; }, 300);
           });
-          indicatorsContainer.appendChild(dot);
+          servicesIndicators.appendChild(dot);
         }
         
-        let sliderStartX = 0;
-        let sliderStartY = 0;
+        let sliderStartX = 0, sliderStartY = 0;
         const servicesWrapper = document.querySelector('.services-slider-wrapper');
         servicesWrapper.addEventListener('touchstart', (e) => {
           sliderStartX = e.touches[0].clientX;
@@ -1124,37 +1138,57 @@
         servicesWrapper.addEventListener('touchend', (e) => {
           const sliderEndX = e.changedTouches[0].clientX;
           const delta = sliderEndX - sliderStartX;
-    
           if (Math.abs(delta) > 50) {
-            if(delta < 0 && servicesIndex < totalSlides - 1) {
+            if(delta < 0 && servicesIndex < totalServices - 1) {
               servicesIndex++;
             } else if(delta > 0 && servicesIndex > 0) {
               servicesIndex--;
             }
           }
-          
           servicesContainer.style.transition = 'transform 0.3s ease';
           servicesContainer.style.transform = `translateX(-${servicesIndex * 100}vw)`;
-          updateIndicators();
+          updateServicesIndicators();
           setTimeout(() => {
             servicesContainer.style.transition = 'none';
           }, 300);
         });
       }
       
-      /* --- Slider für Kundenfeedback (Testimonials) in der mobilen Ansicht --- */
+      /* --- Slider für den Testimonials-Bereich auf mobilen Geräten --- */
       if(window.innerWidth <= 768) {
         let testimonialIndex = 0;
         const testimonialsContainer = document.querySelector('.testimonials-container');
         const testimonialCards = document.querySelectorAll('.testimonial-card');
         const totalTestimonials = testimonialCards.length;
-        let testimonialStartX = 0, testimonialStartY = 0;
+        const testimonialsIndicators = document.querySelector('.testimonials-indicators');
         
+        function updateTestimonialIndicators() {
+          const dots = testimonialsIndicators.querySelectorAll('.indicator');
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === testimonialIndex);
+          });
+        }
+        
+        // Erzeuge die Punkt-Indikatoren
+        for (let i = 0; i < totalTestimonials; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'indicator';
+          if(i === 0) { dot.classList.add('active'); }
+          dot.addEventListener('click', () => {
+            testimonialIndex = i;
+            testimonialsContainer.style.transition = 'transform 0.3s ease';
+            testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
+            updateTestimonialIndicators();
+            setTimeout(() => { testimonialsContainer.style.transition = 'none'; }, 300);
+          });
+          testimonialsIndicators.appendChild(dot);
+        }
+        
+        let testimonialStartX = 0, testimonialStartY = 0;
         testimonialsContainer.addEventListener('touchstart', (e) => {
           testimonialStartX = e.touches[0].clientX;
           testimonialStartY = e.touches[0].clientY;
         });
-        
         testimonialsContainer.addEventListener('touchmove', (e) => {
           let deltaX = e.touches[0].clientX - testimonialStartX;
           let deltaY = e.touches[0].clientY - testimonialStartY;
@@ -1164,7 +1198,6 @@
             testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100 - movePercentage}vw)`;
           }
         });
-        
         testimonialsContainer.addEventListener('touchend', (e) => {
           const testimonialEndX = e.changedTouches[0].clientX;
           const delta = testimonialEndX - testimonialStartX;
@@ -1177,6 +1210,7 @@
           }
           testimonialsContainer.style.transition = 'transform 0.3s ease';
           testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100}vw)`;
+          updateTestimonialIndicators();
           setTimeout(() => {
             testimonialsContainer.style.transition = 'none';
           }, 300);
