@@ -377,8 +377,9 @@
         flex-wrap: nowrap;
         transition: transform 0.3s ease;
       }
+      /* WICHTIG: Jede Service-Karte soll 100vw einnehmen */
       .service-card {
-        flex: 0 0 100%;
+        flex: 0 0 100vw;
         scroll-snap-align: start;
       }
       /* Indikatoren unterhalb des Sliders */
@@ -1016,7 +1017,6 @@
           const direction = deltaX > 0 ? -1 : 1;
           changeImage(direction, false);
         } else {
-          // Hier wird im Lightbox-Bereich zurückgerastet
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
           sliderContainer.style.transform = `translateX(${currentPosition}%)`;
         }
@@ -1115,7 +1115,6 @@
           sliderStartX = e.touches[0].clientX;
           sliderStartY = e.touches[0].clientY;
         });
-        // Hier wird während des Swipens der Slider live aktualisiert
         servicesWrapper.addEventListener('touchmove', (e) => {
           let deltaX = e.touches[0].clientX - sliderStartX;
           let deltaY = e.touches[0].clientY - sliderStartY;
@@ -1133,22 +1132,4 @@
           if (Math.abs(delta) > 50) {
             if(delta < 0 && servicesIndex < totalSlides - 1) {
               servicesIndex++;
-            } else if(delta > 0 && servicesIndex > 0) {
-              servicesIndex--;
-            }
-          }
-          
-          // Übergangsanimation hinzufügen und anschließend "einrasten"
-          servicesContainer.style.transition = 'transform 0.3s ease';
-          servicesContainer.style.transform = `translateX(-${servicesIndex * 100}%)`;
-          updateIndicators();
-          // Transition nach Abschluss entfernen
-          setTimeout(() => {
-            servicesContainer.style.transition = 'none';
-          }, 300);
-        });
-      }
-    })();
-  </script>
-</body>
-</html>
+            } else if(delta > 0 &&
