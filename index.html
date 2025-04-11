@@ -24,7 +24,7 @@
       --overlay: linear-gradient(45deg, rgba(15,15,15,0.7) 0%, rgba(5,5,5,0.8) 100%);
       --transition-timing: cubic-bezier(0.22, 0.61, 0.36, 1);
     }
-    
+
     /* Globaler Reset & Box-Sizing */
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
@@ -36,13 +36,13 @@
       background-color: var(--background0-color);
       line-height: 1.6;
     }
-    
+
     /* Custom Font */
     @font-face {
       font-family: 'Anurati';
       src: url('fonts/anurati.ttf') format('truetype');
     }
-    
+
     /* Scroll-Animation – sanftes Hereinfliegen */
     .scroll-animation {
       opacity: 0;
@@ -50,23 +50,29 @@
       transition: all 0.6s ease-out;
     }
     .animate { opacity: 1; transform: translateY(0); }
-    
+
     /* Navigation */
     nav {
-      position: fixed; top: 0; width: 100%;
+      position: fixed;
+      top: 0;
+      width: 100%;
       background: rgba(44,44,44,0.9);
-      padding: 15px 0; text-align: center; z-index: 1000;
+      padding: 15px 0;
+      text-align: center;
+      z-index: 1000;
     }
     nav a {
-      margin: 0 20px; color: white;
-      text-decoration: none; font-size: 1.6em;
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 1.6em;
       transition: color 0.3s ease;
     }
     nav a:hover { color: var(--accent1-color); }
     @media (max-width: 768px) {
       nav a { font-size: 1.2em; margin: 0 10px; }
     }
-    
+
     /* Sections */
     section {
       max-width: 1200px;
@@ -76,29 +82,38 @@
       position: relative;
       z-index: 1;
     }
-    /* Für Mobile: #services und #testimonials auf volle Breite */
+    /* Für Mobile: #services & #testimonials auf volle Breite */
     @media (max-width: 768px) {
       #services, #testimonials { max-width: 100%; padding: 0; }
     }
-    
+
     /* Hero Section */
     .hero {
       height: 100vh;
       background: var(--overlay), url('bilder/header.jpg');
       filter: brightness(1.2) contrast(1.05);
-      background-size: cover; background-position: center;
+      background-size: cover;
+      background-position: center;
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
-      text-align: center; padding: 20px; position: relative;
+      text-align: center; padding: 20px;
+      position: relative;
     }
-    /* Der CTA-Button im Hero wird absolut positioniert, um immer etwas überhalb des unteren Bildschirmrands zu erscheinen */
+    /* CTA-Button im Hero – leicht über dem unteren Bildschirmrand */
     .hero .cta-button {
       position: absolute;
-      bottom: 20px;
+      bottom: 50px;
       left: 50%;
       transform: translateX(-50%);
-      margin: 0; /* Margin entfernen, da positioniert */
       color: white;
+      text-decoration: none;
+      background-color: var(--accent1-color);
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease;
+    }
+    .hero .cta-button:hover {
+      background-color: var(--accent2-color);
     }
     .name-title {
       font-family: 'Anurati', 'Playfair Display', serif;
@@ -116,28 +131,34 @@
       margin: 1rem 0;
     }
     h2 { font-size: 2em; color: var(--text-color); margin-bottom: 40px; }
-    
+
     /* Portfolio Gallery */
     .portfolio-section {
-      background: var(--background1-color); padding: 40px;
+      background: var(--background1-color);
+      padding: 40px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
       gap: 40px;
     }
     .image-container {
-      position: relative; overflow: hidden; cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
     .image-container img {
       width: 100%; height: auto;
-      transition: transform 0.7s ease;
+      transition: transform 0.7s ease, filter 0.7s ease;
     }
     .image-container:hover img { transform: scale(1.1); filter: brightness(0.3); }
     .overlay-text {
       font-family: 'Anurati', 'Playfair Display', sans-serif;
-      position: absolute; top: 50%; left: 50%;
+      position: absolute;
+      top: 50%; left: 50%;
       transform: translate(-50%,-50%);
-      color: white; font-size: 2em;
-      opacity: 0; transition: opacity 0.9s ease;
+      color: white;
+      font-size: 2em;
+      opacity: 0;
+      transition: opacity 0.9s ease;
       pointer-events: none;
     }
     @media (max-width:768px) {
@@ -147,108 +168,143 @@
     @media (min-width:769px) {
       .image-container:hover .overlay-text { opacity: 1; }
     }
-    
+
     /* Lightbox */
     .lightbox {
-      display: none; position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: rgba(0,0,0,0.95);
-      justify-content: center; align-items: center;
-      z-index: 1000; touch-action: none;
-      opacity: 0; transition: opacity 0.7s ease;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      touch-action: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
     }
     .lightbox.active { display: flex; opacity: 1; }
     .slider-container {
-      display: flex; width: 100%;
-      will-change: transform; pointer-events: none;
+      display: flex;
+      width: 100%;
+      will-change: transform;
+      pointer-events: none;
     }
     .slider-item {
-      flex: 0 0 100%; min-width: 100%;
-      display: flex; justify-content: center;
-      align-items: center; pointer-events: auto;
+      flex: 0 0 100%;
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: auto;
     }
     .slider-item img {
-      max-width: 90%; max-height: 90vh;
+      max-width: 90%;
+      max-height: 90vh;
       object-fit: contain;
       transition: none !important;
       cursor: default;
     }
     .lightbox-arrow {
-      position: absolute; top: 50%;
+      position: absolute;
+      top: 50%;
       transform: translateY(-50%);
       font-size: 5em;
-      cursor: pointer; user-select: none;
-      padding: 10px 20px; z-index: 1001;
-      transition: opacity 0.2s; pointer-events: auto;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px 20px;
+      z-index: 1001;
+      transition: opacity 0.2s;
+      pointer-events: auto;
     }
     .lightbox-arrow:hover { opacity: 0.8; }
     .lightbox-arrow.left { left: 20px; }
     .lightbox-arrow.right { right: 20px; }
     @media (max-width:768px) { .lightbox-arrow { font-size: 3em; padding: 5px 10px; } }
-    /* Schließen-Button in der Lightbox – größer gemacht */
+    /* Schließen-Button – noch größer */
     .lightbox-close {
-      position: absolute; top: 20px; right: 20px;
-      font-size: 3em; color: white;
-      cursor: pointer; z-index: 1001;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 7em;  /* Erhöht auf 7em */
+      color: white;
+      cursor: pointer;
+      z-index: 1001;
       display: block;
     }
-    
+
     /* Highlight Section */
     .highlight-section {
-      position: relative; margin: 100px 0;
-      padding: 20px; background: transparent;
+      position: relative;
+      margin: 100px 0;
+      padding: 20px;
+      background: transparent;
     }
     .highlight-container {
-      position: relative; max-width: 1400px;
-      margin: 0 auto; overflow: hidden;
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      overflow: hidden;
       box-shadow: 0 25px 50px rgba(0,0,0,0.5);
       transition: transform 0.8s var(--transition-timing);
     }
     .highlight-container:hover { transform: scale(1.02); }
     .highlight-image {
-      width: 100%; height: 80vh;
-      object-fit: cover; filter: grayscale(20%) contrast(110%);
+      width: 100%;
+      height: 80vh;
+      object-fit: cover;
+      filter: grayscale(20%) contrast(110%);
       transition: filter 0.8s ease;
     }
-    .highlight-container:hover .highlight-image {
-      filter: grayscale(0%) contrast(120%) brightness(70%);
-    }
+    .highlight-container:hover .highlight-image { filter: grayscale(0%) contrast(120%) brightness(70%); }
     .highlight-content {
-      position: absolute; top: 50%; left: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%,-50%);
-      text-align: center; width: 100%; padding: 20px;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
       color: var(--light);
       text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
     .highlight-content h3 {
       font-size: clamp(2rem,4vw,3.5rem);
-      margin: 0; line-height: 1.1;
-      opacity: 0; transform: translateY(50px);
+      margin: 0;
+      line-height: 1.1;
+      opacity: 0;
+      transform: translateY(50px);
       transition: all 0.8s var(--transition-timing);
     }
     .highlight-subline,
     .highlight-meta {
-      opacity: 0; transform: translateY(30px);
+      opacity: 0;
+      transform: translateY(30px);
       transition: all 0.8s var(--transition-timing);
     }
     .highlight-container:hover .highlight-content h3,
     .highlight-container:hover .highlight-subline,
     .highlight-container:hover .highlight-meta {
-      opacity: 1; transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
     .highlight-container.touch-active .highlight-image {
       filter: brightness(0.7) contrast(1.2) !important;
     }
-    
+
     /* Über mich */
     .about-container {
-      display: flex; align-items: center;
-      gap: 40px; text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      text-align: left;
       background-color: var(--background1-color);
-      padding: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .about-text {
-      max-width: 600px; font-size: 1.4rem;
+      max-width: 600px;
+      font-size: 1.4rem;
       text-align: justify;
     }
     @media (max-width:768px) { .about-text { font-size: 1.2rem; } }
@@ -257,7 +313,7 @@
     }
     .about-image img {
       width: 300px;
-      height: auto; /* Originalverhältnis beibehalten */
+      height: auto; /* Originalverhältnis */
       transition: transform 0.5s ease, box-shadow 0.6s ease;
     }
     .about-image img:hover {
@@ -270,18 +326,18 @@
       font-size: 1.2rem;
       background-color: var(--accent1-color);
       text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.3s ease;
+      transition: background-color 0.3s ease;
       color: white;
     }
     .cta-button:hover {
       background-color: var(--accent2-color);
-      transform: scale(1.1);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
-    
+
     /* SERVICES SLIDER */
     .services-slider-wrapper {
-      position: relative; width: 100%; overflow: hidden;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
     }
     @media (min-width:769px) {
       .services-container {
@@ -323,7 +379,7 @@
         background: rgba(255,255,255,1);
       }
     }
-    /* Service-Card Anpassungen (kompakter) */
+    /* Service-Card – kompakter */
     .service-card {
       background: var(--background1-color);
       overflow: hidden;
@@ -337,9 +393,9 @@
       box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     }
     .service-image {
-      height: 200px; /* Bildhöhe reduziert */
+      height: 200px; /* Reduzierte Bildhöhe */
       overflow: hidden;
-      cursor: pointer; /* Cursor als Hand */
+      cursor: pointer;
     }
     .service-image img {
       width: 100%;
@@ -349,7 +405,7 @@
     }
     .service-card:hover .service-image img { transform: scale(1.05); }
     .service-content {
-      padding: 20px; /* Innenabstand reduziert */
+      padding: 20px; /* Reduzierter Padding */
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -418,10 +474,12 @@
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
-    
+
     /* TESTIMONIALS SLIDER – gleiche Struktur wie Services */
     .testimonials-slider-wrapper {
-      position: relative; width: 100%; overflow: hidden;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
     }
     @media (min-width:769px) {
       .testimonials-container {
@@ -530,7 +588,7 @@
       margin-top: 20px;
       letter-spacing: 3px;
     }
-    
+
     /* Kontakt Section – stilvoll und schlicht */
     #contact {
       background-color: var(--background1-color);
@@ -542,25 +600,28 @@
     }
     #contact h2 { color: white; }
     #contact p { font-size: 1.6em; margin: 10px 0; }
-    /* Nur Instagram-Link – stilvoll hervorgehoben */
+    /* Kontaktlinks (E-Mail und Telefon) farblich hervorheben */
+    #contact .contact-link {
+      color: var(--accent1-color);
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    #contact .contact-link:hover { color: var(--accent2-color); }
+    /* Instagram-Link als Bild */
     #contact p a.instagram {
       display: inline-block;
-      padding: 8px 12px;
-      border: 2px solid var(--accent1-color);
-      border-radius: 4px;
-      color: var(--accent1-color);
       text-decoration: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    #contact p a.instagram:hover {
-      background-color: var(--accent1-color);
-      color: white;
+    #contact p a.instagram img {
+      max-height: 1.5em;
+      vertical-align: middle;
     }
     @media (max-width:768px) {
       #contact p { font-size: 1.2em; }
       #contact p:last-child a { font-size: 1em; }
     }
-    
+
     /* Footer */
     footer {
       background: var(--dark-color);
@@ -587,7 +648,7 @@
     <a href="#testimonials">Kundenfeedback</a>
     <a href="#contact">Kontakt</a>
   </nav>
-  
+
   <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
@@ -606,7 +667,7 @@
     </div>
     <div class="scroll-indicator"></div>
   </header>
-  
+
   <!-- Portfolio -->
   <section id="portfolio" class="scroll-animation">
     <h2>Portfolio</h2>
@@ -614,7 +675,7 @@
       <!-- Dynamisch geladene Bilder -->
     </div>
   </section>
-  
+
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <div class="slider-container" id="slider-container"></div>
@@ -622,7 +683,7 @@
     <span class="lightbox-arrow right" aria-label="Nächstes Bild">&#10095;</span>
     <span class="lightbox-close" aria-label="Schließen">&times;</span>
   </div>
-  
+
   <!-- Highlight Section -->
   <section class="highlight-section scroll-animation">
     <div class="highlight-container" id="highlight-container">
@@ -637,7 +698,7 @@
       </div>
     </div>
   </section>
-  
+
   <!-- Über mich -->
   <section id="about" class="scroll-animation">
     <h2>Über mich</h2>
@@ -652,13 +713,13 @@
       </div>
     </div>
   </section>
-  
+
   <!-- Leistungen -->
   <section id="services" class="scroll-animation">
     <h2>Leistungen</h2>
     <div class="services-slider-wrapper">
       <div class="services-container">
-        <!-- Jede Service-Karte erhält ein Datenattribut, um die jeweilige Galerie zu identifizieren -->
+        <!-- Jede Service-Karte erhält ein Datenattribut (data-gallery-index) -->
         <div class="service-card" data-gallery-index="0">
           <div class="service-image">
             <img src="bilder/Hochzeit-001.jpg" alt="Hochzeitsfotografie" loading="lazy">
@@ -717,7 +778,7 @@
       <div class="services-indicators"></div>
     </div>
   </section>
-  
+
   <!-- Kundenfeedback (Testimonials) – gleiche Slider-Struktur wie Services -->
   <section id="testimonials" class="scroll-animation">
     <h2>Was Kunden sagen</h2>
@@ -775,7 +836,7 @@
       <div class="testimonials-indicators"></div>
     </div>
   </section>
-  
+
   <!-- Kontakt -->
   <section id="contact" class="scroll-animation">
     <h2>Kontakt</h2>
@@ -783,31 +844,33 @@
     <p>Email: <span class="contact-link" data-clipboard="sebastian.pillinger@gmx.at">sebastian.pillinger@gmx.at</span></p>
     <p>Telefon: <span class="contact-link" data-clipboard="+43 677 62026186">+43 677 62026186</span></p>
     <p>
-      <a href="https://instagram.com/vergrazt" target="_blank" class="contact-link instagram">Instagram</a>
+      <a href="https://instagram.com/vergrazt" target="_blank" class="contact-link instagram">
+        <img src="bilder/insta_w.png" alt="Instagram" style="max-height:2em; vertical-align:middle;">
+      </a>
     </p>
   </section>
-  
+
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Sebastian Pillinger – Alle Rechte vorbehalten</p>
     <p><a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a></p>
   </footer>
-  
+
   <script>
     (function() {
       'use strict';
       
-      // Scroll-Animation: Elemente fliegen sanft herein, wenn sie sichtbar werden.
+      // Scroll-Animation: Elemente fliegen sanft herein
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if(entry.isIntersecting) {
+          if (entry.isIntersecting) {
             entry.target.classList.add('animate');
           }
         });
       }, { threshold: 0.33 });
       document.querySelectorAll('.scroll-animation').forEach(el => observer.observe(el));
       
-      // Portfolio-Daten (werden für die Lightbox im SERVICES-Bereich genutzt)
+      // Portfolio-Daten (für Lightbox im SERVICES-Bereich)
       const portfolioData = [
         {
           src: "bilder/Hochzeit-001.jpg",
@@ -856,7 +919,7 @@
       let touchStartY = 0;
       let currentPosition = 0;
       
-      // Portfolio initialisieren (falls der Portfolio-Bereich genutzt wird)
+      // Portfolio initialisieren (optional, falls Portfolio genutzt wird)
       portfolioData.forEach(item => {
         const container = document.createElement('div');
         container.className = 'image-container';
@@ -899,7 +962,7 @@
       
       function changeImage(n, animate = false) {
         const newIndex = (currentIndex + n + images.length) % images.length;
-        if(animate) {
+        if (animate) {
           isAnimating = true;
           sliderContainer.style.transition = 'transform 0.3s var(--transition-timing)';
         } else {
@@ -908,14 +971,12 @@
         currentIndex = newIndex;
         currentPosition = -currentIndex * 100;
         sliderContainer.style.transform = `translateX(${currentPosition}%)`;
-        if(animate) {
+        if (animate) {
           sliderContainer.addEventListener('transitionend', () => {
             isAnimating = false;
             preloadNeighbors(currentIndex);
           }, { once: true });
-        } else {
-          preloadNeighbors(currentIndex);
-        }
+        } else { preloadNeighbors(currentIndex); }
       }
       
       function preloadNeighbors(index) {
@@ -933,12 +994,12 @@
       
       function handleTouchMove(e) {
         e.preventDefault();
-        if(isAnimating) return;
+        if (isAnimating) return;
         const touchX = e.touches[0].clientX;
         const touchY = e.touches[0].clientY;
         const deltaX = touchX - touchStartX;
         const deltaY = touchY - touchStartY;
-        if(Math.abs(deltaY) > Math.abs(deltaX)) {
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
           sliderContainer.style.transform = `translateY(${deltaY * 0.3}px)`;
           return;
         }
@@ -952,11 +1013,11 @@
         const endY = e.changedTouches[0].clientY;
         const deltaX = endX - touchStartX;
         const deltaY = endY - touchStartY;
-        if(Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
+        if (Math.abs(deltaY) > 100 && Math.abs(deltaY) > Math.abs(deltaX)) {
           closeLightbox();
           return;
         }
-        if(Math.abs(deltaX) > window.innerWidth * 0.15) {
+        if (Math.abs(deltaX) > window.innerWidth * 0.15) {
           const direction = deltaX > 0 ? -1 : 1;
           changeImage(direction, false);
         } else {
@@ -974,10 +1035,10 @@
       });
       
       document.addEventListener('keydown', (e) => {
-        if(!lightbox.classList.contains('active')) return;
-        if(e.key === 'ArrowLeft') changeImage(-1, false);
-        else if(e.key === 'ArrowRight') changeImage(1, false);
-        else if(e.key === 'Escape') closeLightbox();
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'ArrowLeft') changeImage(-1, false);
+        else if (e.key === 'ArrowRight') changeImage(1, false);
+        else if (e.key === 'Escape') closeLightbox();
       });
       
       arrowLeft.addEventListener('click', (e) => {
@@ -989,7 +1050,7 @@
         changeImage(1, false);
       });
       
-      if(closeButton) {
+      if (closeButton) {
         closeButton.addEventListener('click', (e) => {
           e.stopPropagation();
           closeLightbox();
@@ -1000,28 +1061,33 @@
         anchor.addEventListener('click', function(e) {
           e.preventDefault();
           const targetEl = document.getElementById(this.getAttribute('href').substring(1));
-          if(targetEl) {
+          if (targetEl) {
             targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         });
       });
       
-      function copyToClipboard(text) {
+      /* Copy-to-Clipboard: Beim Klick auf E-Mail oder Telefon erscheint "Kopiert!" dezent und verschwindet nach 1,5 Sekunden */
+      function copyToClipboard(text, element) {
         navigator.clipboard.writeText(text).then(() => {
-          alert("Kopiert: " + text);
-        }).catch(() => {
-          alert("Kopieren fehlgeschlagen. Bitte manuell kopieren: " + text);
+          if (!element.getAttribute('data-original-text')) {
+            element.setAttribute('data-original-text', element.innerText);
+          }
+          element.innerText = "Kopiert!";
+          setTimeout(() => {
+            element.innerText = element.getAttribute('data-original-text');
+            element.removeAttribute('data-original-text');
+          }, 1500);
         });
       }
-      
       document.querySelectorAll('[data-clipboard]').forEach(el => {
         el.addEventListener('click', () => {
-          copyToClipboard(el.getAttribute('data-clipboard'));
+          copyToClipboard(el.getAttribute('data-clipboard'), el);
         });
       });
       
       /* --- Slider für den SERVICES-Bereich auf mobilen Geräten --- */
-      if(window.innerWidth <= 768) {
+      if (window.innerWidth <= 768) {
         let servicesIndex = 0;
         const servicesContainer = document.querySelector('.services-container');
         const totalServices = document.querySelectorAll('.service-card').length;
@@ -1034,10 +1100,10 @@
           });
         }
         
-        for(let i = 0; i < totalServices; i++) {
+        for (let i = 0; i < totalServices; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
-          if(i === 0) dot.classList.add('active');
+          if (i === 0) dot.classList.add('active');
           dot.addEventListener('click', () => {
             servicesIndex = i;
             servicesContainer.style.transition = 'transform 0.3s ease';
@@ -1057,7 +1123,7 @@
         servicesWrapper.addEventListener('touchmove', (e) => {
           let deltaX = e.touches[0].clientX - sliderStartX;
           let deltaY = e.touches[0].clientY - sliderStartY;
-          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (Math.abs(deltaX) > Math.abs(deltaY)) {
             e.preventDefault();
             const movePercentage = (deltaX / window.innerWidth) * 100;
             servicesContainer.style.transform = `translateX(-${servicesIndex * 100 - movePercentage}vw)`;
@@ -1066,10 +1132,10 @@
         servicesWrapper.addEventListener('touchend', (e) => {
           const sliderEndX = e.changedTouches[0].clientX;
           const delta = sliderEndX - sliderStartX;
-          if(Math.abs(delta) > 50) {
-            if(delta < 0 && servicesIndex < totalServices - 1) {
+          if (Math.abs(delta) > 50) {
+            if (delta < 0 && servicesIndex < totalServices - 1) {
               servicesIndex++;
-            } else if(delta > 0 && servicesIndex > 0) {
+            } else if (delta > 0 && servicesIndex > 0) {
               servicesIndex--;
             }
           }
@@ -1080,8 +1146,8 @@
         });
       }
       
-      /* --- Slider für den TESTIMONIALS-Bereich – identisch zu Services --- */
-      if(window.innerWidth <= 768) {
+      /* --- Slider für den TESTIMONIALS-Bereich – identisch zu SERVICES --- */
+      if (window.innerWidth <= 768) {
         let testimonialIndex = 0;
         const testimonialsContainer = document.querySelector('.testimonials-container');
         const totalTestimonials = document.querySelectorAll('.testimonial-card').length;
@@ -1094,10 +1160,10 @@
           });
         }
         
-        for(let i = 0; i < totalTestimonials; i++) {
+        for (let i = 0; i < totalTestimonials; i++) {
           const dot = document.createElement('span');
           dot.className = 'indicator';
-          if(i === 0) dot.classList.add('active');
+          if (i === 0) dot.classList.add('active');
           dot.addEventListener('click', () => {
             testimonialIndex = i;
             testimonialsContainer.style.transition = 'transform 0.3s ease';
@@ -1116,7 +1182,7 @@
         testimonialsContainer.addEventListener('touchmove', (e) => {
           let deltaX = e.touches[0].clientX - testimonialStartX;
           let deltaY = e.touches[0].clientY - testimonialStartY;
-          if(Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (Math.abs(deltaX) > Math.abs(deltaY)) {
             e.preventDefault();
             const movePercentage = (deltaX / window.innerWidth) * 100;
             testimonialsContainer.style.transform = `translateX(-${testimonialIndex * 100 - movePercentage}vw)`;
@@ -1125,10 +1191,10 @@
         testimonialsContainer.addEventListener('touchend', (e) => {
           const testimonialEndX = e.changedTouches[0].clientX;
           const delta = testimonialEndX - testimonialStartX;
-          if(Math.abs(delta) > 50) {
-            if(delta < 0 && testimonialIndex < totalTestimonials - 1) {
+          if (Math.abs(delta) > 50) {
+            if (delta < 0 && testimonialIndex < totalTestimonials - 1) {
               testimonialIndex++;
-            } else if(delta > 0 && testimonialIndex > 0) {
+            } else if (delta > 0 && testimonialIndex > 0) {
               testimonialIndex--;
             }
           }
@@ -1145,7 +1211,7 @@
           e.stopPropagation();
           const card = e.target.closest('.service-card');
           const galleryIndex = card.getAttribute('data-gallery-index');
-          if(galleryIndex !== null) {
+          if (galleryIndex !== null) {
             const galleryData = portfolioData[galleryIndex];
             openLightbox(galleryData.src, galleryData.images);
           }
