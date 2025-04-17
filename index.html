@@ -72,6 +72,10 @@
     @media (max-width: 768px) {
       nav a { font-size: 1.2em; margin: 0 10px; }
     }
+	
+	nav a.active-nav-link {
+    color: var(--accent1-color);
+  }
 
     /* Sections */
     section {
@@ -670,7 +674,7 @@
 
   <!-- Portfolio -->
   <section id="portfolio" class="scroll-animation">
-    <h2>Portfolio</h2>
+    <h2>Augenblicke, die bleiben</h2>
     <div class="portfolio-section" id="portfolio-gallery">
       <!-- Dynamisch geladene Bilder -->
     </div>
@@ -690,10 +694,9 @@
       <img src="bilder/highlight.jpg" alt="Meisterwerk der Eventfotografie" loading="lazy" class="highlight-image">
       <div class="highlight-content">
         <h3>Aktuelles Highlight</h3>
-        <p class="highlight-subline">Norwegen: Trondheim Universität NTNU</p>
+        <p class="highlight-subline">Hochzeit unter Fichten</p>
         <div class="highlight-meta">
-          <span>🏆 Ausgezeichnete Bildkomposition</span>
-          <span>✨ Premium Post-Production</span>
+          <span>Da, wo die Natur noch atmet</span>
         </div>
       </div>
     </div>
@@ -701,10 +704,10 @@
 
   <!-- Über mich -->
   <section id="about" class="scroll-animation">
-    <h2>Über mich</h2>
+    <h2>Hey, ich bin</h2>
     <div class="about-container">
       <div class="about-text">
-        <p>Hey, ich bin Sebastian! Ich liebe es, echte Momente einzufangen – die strahlenden Augen einer Braut, das ausgelassene Lachen auf einer Feier oder die besonderen Details eines einzigartigen Tages. Fotografie ist für mich mehr als ein Job – es ist meine Art, Geschichten zu erzählen.</p>
+        <p>Sebastian! Ich liebe es, echte Momente einzufangen – die strahlenden Augen einer Braut, das ausgelassene Lachen auf einer Feier oder die besonderen Details eines einzigartigen Tages. Fotografie ist für mich mehr als ein Job – es ist meine Art, Geschichten zu erzählen.</p>
         <p>Seit über 10 Jahren halte ich mit meiner Kamera Erinnerungen fest, sei es bei Hochzeiten, Events oder spannenden Projekten. Dabei ist mir eines besonders wichtig: Ihr sollt euch wohlfühlen! Denn die schönsten Bilder entstehen, wenn ihr einfach ihr selbst seid. Lass uns gemeinsam Momente schaffen, die bleiben!</p>
         <a href="#contact" class="cta-button" aria-label="Kontaktiere mich">Jetzt Termin vereinbaren</a>
       </div>
@@ -716,7 +719,7 @@
 
   <!-- Leistungen -->
   <section id="services" class="scroll-animation">
-    <h2>Leistungen</h2>
+    <h2>Ich fotographiere...</h2>
     <div class="services-slider-wrapper">
       <div class="services-container">
         <!-- Jede Service-Karte erhält ein Datenattribut (data-gallery-index) -->
@@ -725,52 +728,52 @@
             <img src="bilder/Hochzeit-001.jpg" alt="Hochzeitsfotografie" loading="lazy">
           </div>
           <div class="service-content">
-            <h3>Hochzeitsfotografie</h3>
+            <h3>Hochzeiten</h3>
             <p>Individuelle Begleitung Ihres besonderen Tages – von der Vorbereitung bis zum letzten Tanz. Natürliche, emotionale Aufnahmen, die die Magie des Moments einfangen.</p>
             <ul class="service-features">
-              <li>✔ Vor-Ort-Termin & Planung</li>
-              <li>✔ 8-12 Stunden Coverage</li>
-              <li>✔ 300+ hochwertige Bilder</li>
-              <li>✔ Professionelle Bearbeitung</li>
-              <li>✔ Online-Galerie & USB-Stick</li>
+              <li>Vor-Ort-Besprechung & Planung</li>
+              <li>8-12 Stunden Coverage</li>
+              <li>300+ hochwertige Bilder</li>
+              <li>Professionelle Bearbeitung</li>
+              <li>Online-Galerie & USB-Stick</li>
             </ul>
-            <div class="service-price">ab €1.490</div>
+            <div class="service-price">ab €590</div>
             <a href="#contact" class="service-button">Anfragen</a>
           </div>
         </div>
         <div class="service-card" data-gallery-index="1">
           <div class="service-image">
-            <img src="bilder/Event-002.jpg" alt="Eventfotografie" loading="lazy">
+            <img src="bilder/Event-001.jpg" alt="Eventfotografie" loading="lazy">
           </div>
           <div class="service-content">
             <h3>Events & Partys</h3>
             <p>Professionelle Dokumentation Ihrer Veranstaltung mit lebendigen, authentischen Bildern, die Stimmung und Atmosphäre perfekt transportieren.</p>
             <ul class="service-features">
-              <li>✔ Individuelles Konzept</li>
-              <li>✔ 4-8 Stunden Coverage</li>
-              <li>✔ 150+ ausgewählte Bilder</li>
-              <li>✔ Schnelle Lieferung</li>
-              <li>✔ Social-Media-Optimierung</li>
+              <li>Individuelles Konzept</li>
+              <li>4-8 Stunden Coverage</li>
+              <li>150+ ausgewählte Bilder</li>
+              <li>Schnelle Lieferung</li>
+              <li>Social-Media-Optimierung</li>
             </ul>
-            <div class="service-price">ab €790</div>
+            <div class="service-price">ab €390</div>
             <a href="#contact" class="service-button">Anfragen</a>
           </div>
         </div>
         <div class="service-card" data-gallery-index="2">
           <div class="service-image">
-            <img src="bilder/Event-003.jpg" alt="Sportfotografie" loading="lazy">
+            <img src="bilder/Sport-001.jpg" alt="Sportfotografie" loading="lazy">
           </div>
           <div class="service-content">
             <h3>Sportveranstaltungen</h3>
             <p>Dynamische Action-Aufnahmen, die die Energie und Leidenschaft des Sports einfangen. Perfekt für Vereine, Wettkämpfe und individuelle Athleten.</p>
             <ul class="service-features">
-              <li>✔ Vorab-Besprechung</li>
-              <li>✔ Flexible Zeitpakete</li>
-              <li>✔ Hochgeschwindigkeitsaufnahmen</li>
-              <li>✔ Team- & Einzelporträts</li>
-              <li>✔ Schnittservice für Vereine</li>
+              <li>Vorab-Besprechung</li>
+              <li>Flexible Zeitpakete</li>
+              <li>Hochgeschwindigkeitsaufnahmen</li>
+              <li>Team- & Einzelporträts</li>
+              <li>Schnittservice für Vereine</li>
             </ul>
-            <div class="service-price">ab €590</div>
+            <div class="service-price">ab €490</div>
             <a href="#contact" class="service-button">Anfragen</a>
           </div>
         </div>
@@ -781,7 +784,7 @@
 
   <!-- Kundenfeedback (Testimonials) – gleiche Slider-Struktur wie Services -->
   <section id="testimonials" class="scroll-animation">
-    <h2>Was Kunden sagen</h2>
+    <h2>Das sagen meine Kunden</h2>
     <div class="testimonials-slider-wrapper">
       <div class="testimonials-container">
         <div class="testimonial-card">
@@ -839,8 +842,7 @@
 
   <!-- Kontakt -->
   <section id="contact" class="scroll-animation">
-    <h2>Kontakt</h2>
-    <p>Ich freue mich über deine Anfrage!</p>
+    <h2>So findest du mich</h2>
     <p>Email: <span class="contact-link" data-clipboard="sebastian.pillinger@gmx.at">sebastian.pillinger@gmx.at</span></p>
     <p>Telefon: <span class="contact-link" data-clipboard="+43 677 62026186">+43 677 62026186</span></p>
     <p>
@@ -848,11 +850,12 @@
         <img src="bilder/insta_w.png" alt="Instagram" style="max-height:2em; vertical-align:middle;">
       </a>
     </p>
+	<p>Ich freue mich über deine Anfrage!</p>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Sebastian Pillinger – Alle Rechte vorbehalten</p>
+    <p>&copy; 2025 Sebastian Pillinger</p>
     <p><a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a></p>
   </footer>
 
@@ -1217,8 +1220,27 @@
           }
         });
       });
-      
     })();
+	
+	// Navigation Highlight on Scroll
+	  const navLinks = document.querySelectorAll('nav a');
+	  const sections = Array.from(navLinks).map(link => {
+		const id = link.getAttribute('href').substring(1);
+		return document.getElementById(id);
+	  });
+
+	  function highlightNav() {
+		let index = sections.length;
+		while (--index >= 0) {
+		  const sectionTop = sections[index].offsetTop - 100;
+		  if (window.scrollY >= sectionTop) {
+			navLinks.forEach(link => link.classList.remove('active-nav-link'));
+			navLinks[index].classList.add('active-nav-link');
+			break;
+		  }
+		}
+	  }
+	  window.addEventListener('scroll', highlightNav);
   </script>
 </body>
 </html>
