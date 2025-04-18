@@ -21,7 +21,7 @@
       --background1-color: hsl(0, 0%, 12%);
       --text-color: hsl(0, 0%, 98%);
       --light: hsl(0, 0%, 98%);
-      --overlay: linear-gradient(45deg, rgba(15,15,15,0.7) 0%, rgba(5,5,5,0.8) 100%);
+      --overlay: linear-gradient(45deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%);
       --transition-timing: cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
@@ -51,34 +51,130 @@
     }
     .animate { opacity: 1; transform: translateY(0); }
 
-    /* Navigation */
-    nav {
+    /* ===== Navigation ===== */
+    .navbar {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(44,44,44,0.9);
-      padding: 15px 0;
-      text-align: center;
+      top: 0; left: 0;
+      width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      padding: 0.5rem 2rem; /* schmalerer Streifen */
       z-index: 1000;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: saturate(180%) blur(10px);
     }
-    nav a {
-      margin: 0 20px;
-      color: white;
-      text-decoration: none;
-      font-size: 1.6em;
-      transition: color 0.3s ease;
+    .navbar .logo {
+      font-family: 'Anurati', 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      /* Text-Shadow entfernt, damit die Farbe strahlend wirkt */
+      text-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    nav a:hover { color: var(--accent1-color); }
-    @media (max-width: 768px) {
-      nav a { font-size: 1.2em; margin: 0 10px; }
+    .navbar .logo .first-name {
+      /* etwas kleinere Größe */
+      font-size: clamp(0.625rem, 2.5vw, 1.25rem);
+      color: var(--light);
+    }
+    .navbar .logo .last-name {
+      font-size: clamp(0.5625rem, 2.25vw, 1.125rem); /* Verhältnis beibehalten */
+      color: var(--accent1-color);
+      margin-top: -0.2rem;
+    }
+    .navbar ul {
+	  list-style: none;    /* keine Aufzählungspunkte */
+	  margin: 0;
+	  padding: 0;
+	  display: flex;       /* nebeneinander anordnen */
+	  gap: 2rem;           /* Abstand zwischen den Items */
+	}
+    .navbar li {
+      font-weight: 400; transition: color 0.3s;
     }
 	
-	nav a.active-nav-link {
-    color: var(--accent1-color);
-  }
+	
+	.navbar ul li a {
+	  display: inline-block;         /* für Padding wirksam */
+	  font-family: 'Roboto', sans-serif;  /* gewünschte Schrift */
+	  font-weight: 400;              /* gewünschter Schriftschnitt */
+	  font-size: 1rem;               /* feste Größe oder clamp() */
+	  text-transform: uppercase;     /* Großbuchstaben */
+	  letter-spacing: 0.05em;        /* optische Laufweite */
+	  color: var(--light);           /* helle Standardfarbe */
+	  padding: 0.5rem 0;             /* oben/unten etwas Luft */
+	  text-decoration: none;
+	  transition: color 0.3s ease;
+	}
+	.navbar ul li a:hover,
+	.navbar ul li a.active-nav-link {
+	  color: var(--accent1-color);  /* Akzent‑Farbe beim Überfahren oder aktivem Link */
+	}
 
-    /* Sections */
-    section {
+    /* ===== Hero Section ===== */
+	section.hero {
+	  max-width: none;    /* keine Beschränkung auf 1200px mehr */
+	  margin: 0;          /* zentrierendes auto entfernen */
+	  padding: 0;         /* optional, falls du den Innenabstand weghaben willst */
+	  width: 100vw;       /* volle Viewport‑Breite */
+	  position: relative; /* nötig für das nachfolgende Left‑Tweak */
+	  left: 50%;          /* verschiebe den linken Rand auf die Mitte */
+	  transform: translateX(-50%); /* zieh die Section zurück, sodass sie links anliegt */
+	}
+    .hero {
+      position: relative; width: 100%; height: 100vh;
+      background:
+        linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+        url('bilder/Hochzeit-051.jpg') center/cover no-repeat;
+      display: flex; align-items: center; justify-content: flex-start;
+      padding-left: 5%; text-align: left;
+    }
+    .hero-content {
+      max-width: 600px; padding: 0 1rem 0 2rem;
+      animation: fadeIn 1.2s ease-out forwards; opacity: 0;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .hero-content h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 600; line-height: 1.2; margin-bottom: 1rem;
+      border-left: 5px solid var(--accent1-color);
+      padding-left: 1rem;
+    }
+    .hero-content p {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 300; margin-bottom: 2rem;
+      line-height: 1.5; color: #ececec;
+    }
+    .cta-button {
+      display: inline-block;
+      background-color: var(--accent1-color);
+      color: #333; padding: 0.75rem 1.75rem;
+      border: none; border-radius: 50px;
+      font-size: 1rem; font-weight: 500;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      background-color: #e0b845;
+    }
+
+    /* ===== Scroll Indicator ===== */
+    .scroll-down {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem; animation: bounce 2s infinite;
+      color: #fff;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -10px); }
+    }
+	
+	/* Sections */
+    section:not(.hero) {
       max-width: 1200px;
       margin: auto;
       padding: 80px 20px;
@@ -90,51 +186,6 @@
     @media (max-width: 768px) {
       #services, #testimonials { max-width: 100%; padding: 0; }
     }
-
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      background: var(--overlay), url('bilder/header.jpg');
-      filter: brightness(1.2) contrast(1.05);
-      background-size: cover;
-      background-position: center;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center; padding: 20px;
-      position: relative;
-    }
-    /* CTA-Button im Hero – leicht über dem unteren Bildschirmrand */
-    .hero .cta-button {
-      position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      text-decoration: none;
-      background-color: var(--accent1-color);
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      transition: background-color 0.3s ease;
-    }
-    .hero .cta-button:hover {
-      background-color: var(--accent2-color);
-    }
-    .name-title {
-      font-family: 'Anurati', 'Playfair Display', serif;
-      font-weight: 700; letter-spacing: -0.03em;
-      line-height: 0.9; text-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      margin-bottom: 2rem;
-    }
-    .first-name { font-size: clamp(3rem,12vw,6rem); color: var(--light); display: block; }
-    .last-name { font-size: clamp(2.5rem,10vw,4.5rem); color: var(--accent1-color); display: block; margin-top: -0.5rem; }
-    .name-subtitle {
-      font-family: 'Roboto', sans-serif;
-      font-weight: 300; letter-spacing: 0.3em;
-      text-transform: uppercase;
-      font-size: clamp(0.8rem,2vw,1.2rem);
-      margin: 1rem 0;
-    }
-    h2 { font-size: 2em; color: var(--text-color); margin-bottom: 40px; }
 
     /* Portfolio Gallery */
     .portfolio-section {
@@ -645,32 +696,29 @@
 </head>
 <body>
   <!-- Hauptnavigation -->
-  <nav aria-label="Hauptnavigation" id="main-nav">
-    <a href="#portfolio">Portfolio</a>
-    <a href="#about">Über mich</a>
-    <a href="#services">Leistungen</a>
-    <a href="#testimonials">Kundenfeedback</a>
-    <a href="#contact">Kontakt</a>
+  <nav class="navbar">
+    <div class="logo">
+      <span class="first-name">Sebastian</span>
+      <span class="last-name">Pillinger</span>
+    </div>
+	<ul>
+		<li><a href="#portfolio">Portfolio</a></li>
+		<li><a href="#about">Über mich</a></li>
+		<li><a href="#services">Leistungen</a></li>
+		<li><a href="#testimonials">Kundenfeedback</a></li>
+		<li><a href="#contact">Kontakt</a></li>
+	</ul>
   </nav>
 
   <!-- Hero Section -->
-  <header class="hero">
+  <section class="hero">
     <div class="hero-content">
-      <h1 class="name-title">
-        <span class="first-name">Sebastian</span>
-        <span class="last-name">Pillinger</span>
-      </h1>
-      <p class="name-subtitle">Fotografie & Bildkunst</p>
-      <div class="hero-meta">
-        <p class="location">📍 Graz & Österreichweit</p>
-        <div class="awards">
-          <br><br><br>
-        </div>
-      </div>
-      <a href="#contact" class="cta-button" aria-label="Kontaktiere mich">Jetzt Termin vereinbaren</a>
+      <h1>Momente, die für immer bleiben</h1>
+      <p>Willkommen bei Sebastian Pillinger Fotografie – professionelle, natürliche und kreative Aufnahmen.</p>
+      <a href="#portfolio" class="cta-button">Galerie entdecken</a>
     </div>
-    <div class="scroll-indicator"></div>
-  </header>
+    <div class="scroll-down">&#x21E3;</div>
+  </section>
 
   <!-- Portfolio -->
   <section id="portfolio" class="scroll-animation">
